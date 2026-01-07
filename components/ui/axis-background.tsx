@@ -7,10 +7,17 @@ interface AxisBackgroundProps {
 
 export function AxisBackground({ className }: AxisBackgroundProps) {
     return (
-        <div className={cn("absolute inset-0 z-0 pointer-events-none overflow-hidden", className)}>
+        <div
+            aria-hidden="true"
+            className={cn(
+                "absolute inset-0 z-0 pointer-events-none overflow-hidden",
+                "bg-black", // Fallback color
+                className
+            )}
+        >
             <Scene />
-            {/* Optional: Add a subtle gradient overlay to ensure text readability if the 3D scene is too bright */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
+            {/* Gradient Overlay for Text Readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80 pointer-events-none" />
         </div>
     );
 }

@@ -7,16 +7,18 @@ export default function PublicLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="relative min-h-screen bg-black text-white selection:bg-white selection:text-black">
-            {/* Global 3D Background - Fixed to viewport for consistent parallax-like feel (though R3F is handling movement) */}
-            <div className="fixed inset-0 z-0">
-                <AxisBackground />
-            </div>
+        <html lang="en" className="dark">
+            <body className="bg-black min-h-screen text-white antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
 
-            {/* Content Layer - consistent z-index */}
-            <div className="relative z-10">
-                {children}
-            </div>
-        </div>
+                {/* Layer 0: Global Background (Fixed, Passive) */}
+                <AxisBackground className="fixed inset-0 z-0 pointer-events-none opacity-20" />
+
+                {/* Layer 1: Content (Relative, Interactive) */}
+                <main className="relative z-10 w-full min-h-screen flex flex-col">
+                    {children}
+                </main>
+
+            </body>
+        </html>
     );
 }
