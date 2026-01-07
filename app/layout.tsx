@@ -36,7 +36,7 @@ export default function RootLayout({
       >
         {/* Layer 0: Global Background (Fixed, Passive) */}
         {/* We place it here so it persists across all pages including Auth and Public */}
-        <AxisBackground className="fixed inset-0 z-0 pointer-events-none opacity-20" />
+        <AxisBackground className="fixed inset-0 z-0 pointer-events-none" />
 
         {/* Layer 1: Content (Relative, Interactive) */}
         {/* We wrap children in a generic relative container to ensure they sit above the background */}

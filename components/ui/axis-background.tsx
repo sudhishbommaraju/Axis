@@ -17,7 +17,7 @@ export function AxisBackground({ className }: AxisBackgroundProps) {
         >
             <Scene />
             {/* Gradient Overlay for Text Readability */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/50 pointer-events-none" />
         </div>
     );
 }
