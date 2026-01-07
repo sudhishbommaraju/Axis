@@ -9,12 +9,13 @@ import { BentoGrid, BentoItem } from '@/components/ui/bento-grid';
 import Dock from '@/components/ui/dock';
 import {
     ShieldCheck, Lock, Layers, History, TrendingUp, Activity, Database,
-    AlertOctagon, Home, LogIn, UserPlus, FileText, Globe, Cpu, Network
+    AlertOctagon, Home, LogIn, UserPlus, FileText, Globe, Cpu, Network,
+    Bell, Key, Fingerprint, BarChart3, Workflow, Briefcase
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
 
-// Axis-specific Bento Items (Core Logic)
+// 1. Core Logic (The Brain)
 const coreFeatures: BentoItem[] = [
     {
         title: "Real Spending Power",
@@ -52,25 +53,53 @@ const coreFeatures: BentoItem[] = [
     },
 ];
 
-// Enterprise Modules (Expanded Content)
+// 2. Security & Operations (The Shield)
+const securityFeatures: BentoItem[] = [
+    {
+        title: "Role-Based Access",
+        description: "Granular permissions for Founders, CFOs, and Department Heads.",
+        icon: <Key className="w-5 h-5 text-orange-500" />,
+        tags: ["Security", "RBAC"],
+    },
+    {
+        title: "Audit Trails",
+        description: "Cryptographically verifiable logs of every user action and system change.",
+        icon: <Fingerprint className="w-5 h-5 text-blue-500" />,
+        colSpan: 1,
+    },
+    {
+        title: "SSO & SAML",
+        description: "Enterprise-grade identity integration for seamless onboarding.",
+        icon: <Briefcase className="w-5 h-5 text-pink-500" />,
+        tags: ["Enterprise"],
+    },
+];
+
+// 3. Integrations & Intelligence (The Network)
 const moduleFeatures: BentoItem[] = [
     {
         title: "AI Compliance",
         description: "Automated checks against employment law and tax jurisdiction for every hire.",
         icon: <Cpu className="w-5 h-5 text-sky-500" />,
         tags: ["Legal", "AI"],
+        colSpan: 2,
+    },
+    {
+        title: "Context-Aware Alerts",
+        description: "Slack & Email notifications when risk states change or runway drops.",
+        icon: <Bell className="w-5 h-5 text-yellow-500" />,
+        tags: ["Notifications"],
     },
     {
         title: "Global Payroll Sync",
         description: "Connects with Deel, Rippling, and Gusto to enforce salary caps.",
-        icon: <Globe className="w-5 h-5 text-blue-500" />,
-        colSpan: 1,
+        icon: <Globe className="w-5 h-5 text-indigo-500" />,
     },
     {
-        title: "Vendor Network",
-        description: "Pre-vetted integration with major SaaS providers for automated cost tracking.",
-        icon: <Network className="w-5 h-5 text-orange-500" />,
-        tags: ["SaaS", "Cost"],
+        title: "SaaS Vendor Network",
+        description: "Pre-vetted integration with major providers for automated cost tracking.",
+        icon: <Network className="w-5 h-5 text-teal-500" />,
+        colSpan: 2,
     },
 ];
 
@@ -131,18 +160,29 @@ export default function LandingPage() {
                     <div className="space-y-8 animate-in fade-in zoom-in duration-1000 delay-300 fill-mode-forwards opacity-0" style={{ animationFillMode: 'forwards' }}>
                         <div className="text-center space-y-2">
                             <h2 className="text-2xl font-semibold text-white">The Core Engine</h2>
-                            <p className="text-neutral-400">How Axis enforces survival.</p>
+                            <p className="text-neutral-400">Survival invariants enforced by code.</p>
                         </div>
                         <div className="w-full flex justify-center">
                             <BentoGrid items={coreFeatures} />
                         </div>
                     </div>
 
-                    {/* Section 2: Modules (Bento) */}
+                    {/* Section 2: Security & Operations */}
                     <div className="space-y-8">
                         <div className="text-center space-y-2">
-                            <h2 className="text-2xl font-semibold text-white">Enterprise Modules</h2>
-                            <p className="text-neutral-400">Expandable capabilities for scaling teams.</p>
+                            <h2 className="text-2xl font-semibold text-white">Security & Control</h2>
+                            <p className="text-neutral-400">Military-grade governance for your capital.</p>
+                        </div>
+                        <div className="w-full flex justify-center">
+                            <BentoGrid items={securityFeatures} />
+                        </div>
+                    </div>
+
+                    {/* Section 3: Integrations (Bento) */}
+                    <div className="space-y-8">
+                        <div className="text-center space-y-2">
+                            <h2 className="text-2xl font-semibold text-white">Intelligence Layer</h2>
+                            <p className="text-neutral-400">Connected to your entire financial stack.</p>
                         </div>
                         <div className="w-full flex justify-center">
                             <BentoGrid items={moduleFeatures} />
