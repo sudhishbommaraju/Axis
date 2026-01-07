@@ -94,8 +94,8 @@ export default function LandingPage() {
             </div>
 
             {/* Main Content - Relative z-10 for interaction */}
-            <div className="relative z-10 flex flex-col items-center justify-start p-8 pt-32 pb-24 min-h-screen">
-                <div className="w-full max-w-6xl space-y-32">
+            <div className="relative z-10 flex flex-col items-center justify-start p-8 pt-16 pb-24 min-h-screen">
+                <div className="w-full max-w-6xl space-y-16">
 
                     {/* Hero Section */}
                     <div className="flex flex-col items-center text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -103,7 +103,7 @@ export default function LandingPage() {
                             ✨ v1.0 System Operational
                         </Badge>
 
-                        <div className="space-y-6 flex items-center justify-center flex-col">
+                        <div className="space-y-4 flex items-center justify-center flex-col">
                             <h1 className="text-4xl md:text-7xl font-semibold tracking-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
                                 Decision Authority Layer <br /> for Businesses
                             </h1>
@@ -168,7 +168,7 @@ export default function LandingPage() {
 
 function BottomSections() {
     return (
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 pb-24 space-y-32">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 pb-24 space-y-16">
 
             {/* The Problem */}
             <section className="grid md:grid-cols-2 gap-16 items-center border-t border-white/10 pt-24">
