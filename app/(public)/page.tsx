@@ -1,188 +1,186 @@
+"use client";
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ShieldCheck, Lock, Activity } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Scene } from '@/components/ui/hero-section';
+import { ShieldCheck, Lock, Layers, History, ArrowRight, StopCircle, Activity, Brain, Zap } from 'lucide-react';
+import { cn } from '@/lib/utils'; // Ensure cn is imported if used, though strict DemoOne didn't use it in map
+
+const features = [
+    {
+        icon: ShieldCheck,
+        title: "Decision Authority",
+        description: "Validates actions before they happen. Not after.",
+    },
+    {
+        icon: Lock,
+        title: "Risk Engine",
+        description: "Blocks commitments that breach safety rules.",
+    },
+    {
+        icon: Layers,
+        title: "Operating System",
+        description: "Manages the state of your business risk structure.",
+    },
+    {
+        icon: History,
+        title: "Institutional Memory",
+        description: "A permanent ledger of intent and outcome.",
+    },
+];
 
 export default function LandingPage() {
     return (
-        <div className="w-full max-w-5xl mx-auto px-6 pb-32">
+        <div className="relative min-h-screen w-full bg-black text-white overflow-hidden font-sans selection:bg-white/20">
 
-            {/* SECTION 1: HEADER / HERO (Text Priority) */}
-            <header className="pt-32 pb-24 space-y-8">
-                <div className="space-y-4">
-                    <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white uppercase">
-                        Axis
-                    </h1>
-                    <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-white max-w-3xl leading-[1.1]">
-                        Decision Authority Layer <br /> for Businesses.
+            {/* 3D Scene Background - Absolute, behind everything */}
+            <div className='absolute inset-0 z-0'>
+                <Scene />
+            </div>
+
+            {/* Main Content - Relative z-10 for interaction */}
+            <div className="relative z-10 flex flex-col items-center justify-center p-8 pt-32 pb-24 min-h-screen">
+                <div className="w-full max-w-6xl space-y-16">
+
+                    {/* Hero Section */}
+                    <div className="flex flex-col items-center text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                        <Badge variant="secondary" className="backdrop-blur-sm bg-white/10 border border-white/20 text-white hover:bg-white/20 px-4 py-2 rounded-full font-medium">
+                            ✨ v1.0 System Operational
+                        </Badge>
+
+                        <div className="space-y-6 flex items-center justify-center flex-col">
+                            <h1 className="text-4xl md:text-7xl font-semibold tracking-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+                                Decision Authority Layer <br /> for Businesses
+                            </h1>
+                            <p className="text-lg md:text-xl text-neutral-300 max-w-2xl leading-relaxed">
+                                Axis sits between intent and action to enforce financial survival. <br className="hidden md:block" />
+                                Designed for serious operators who value reality over forecasts.
+                            </p>
+
+                            <div className="flex flex-col sm:flex-row gap-4 items-center pt-4">
+                                <Link href="/login">
+                                    <Button className="text-sm px-8 py-6 rounded-xl bg-white text-black border border-white/10 shadow-lg shadow-white/5 hover:bg-white/90 hover:scale-105 transition-all duration-300 font-semibold text-base">
+                                        Enter Axis
+                                    </Button>
+                                </Link>
+                                <Link href="/signup">
+                                    <Button className="text-sm px-8 py-6 rounded-xl bg-transparent text-white border border-white/20 shadow-none hover:bg-white/10 transition-all duration-300 font-medium text-base">
+                                        Create Account
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Features Grid (Glassmorphism) */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full animate-in fade-in zoom-in duration-1000 delay-300 fill-mode-forwards opacity-0" style={{ animationFillMode: 'forwards' }}>
+                        {features.map((feature, idx) => (
+                            <div
+                                key={idx}
+                                className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 h-48 flex flex-col justify-between items-start hover:bg-white/10 transition-colors duration-300 group"
+                            >
+                                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors text-white">
+                                    <feature.icon size={20} />
+                                </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-base font-medium text-white">{feature.title}</h3>
+                                    <p className="text-sm text-neutral-400 leading-snug">{feature.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                </div>
+            </div>
+
+            {/* Continuation of Axis Content (Styled to match new aesthetic) */}
+            <BottomSections />
+
+        </div>
+    );
+}
+
+function BottomSections() {
+    return (
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 pb-24 space-y-32">
+
+            {/* The Problem */}
+            <section className="grid md:grid-cols-2 gap-16 items-center">
+                <div className="space-y-6">
+                    <h2 className="text-3xl font-semibold tracking-tight text-white">Why Businesses Die</h2>
+                    <p className="text-neutral-400 text-lg leading-relaxed">
+                        It isn't lack of vision. It's the invisible accumulation of commitments.
+                        Subscriptions, hires, and contracts compound into a fixed-cost structure that outpaces reality.
+                        By the time the P&L arrives, the money is gone.
+                    </p>
+                </div>
+                <div className="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center">
+                    <div className="text-neutral-500 font-mono text-sm">
+                        [ P&L Lag: -30 Days ] <br />
+                        [ Cash Burn: Accelerating ] <br />
+                        [ Runway: &lt; 3 Months ]
+                    </div>
+                </div>
+            </section>
+
+            {/* Spending Power */}
+            <section className="text-center space-y-12">
+                <div className="space-y-6">
+                    <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10 px-4 py-1">
+                        Core Logic
+                    </Badge>
+                    <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-white">
+                        Real Spending Power
                     </h2>
-                </div>
-
-                <p className="text-xl md:text-2xl text-white/60 font-light max-w-2xl leading-relaxed border-l-2 border-emerald-500/50 pl-6">
-                    Axis sits between intent and action to enforce financial survival.
-                </p>
-
-                <div className="flex flex-wrap gap-4 pt-4">
-                    <Link href="/login">
-                        <Button size="lg" className="bg-white text-black hover:bg-zinc-200 rounded-full h-12 px-8 text-base font-medium">
-                            Enter Axis
-                        </Button>
-                    </Link>
-                    <Link href="/signup">
-                        <Button variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10 rounded-full h-12 px-8 text-base font-medium">
-                            Create Account
-                        </Button>
-                    </Link>
-                </div>
-            </header>
-
-            {/* SECTION 2: PROBLEM STATEMENT */}
-            <section className="py-24 border-t border-white/10 space-y-8">
-                <h3 className="text-sm font-mono text-emerald-500 uppercase tracking-widest">The Problem</h3>
-                <div className="space-y-6 max-w-2xl text-lg text-white/70 leading-relaxed">
-                    <p>
-                        Businesses rarely fail due to a lack of product-market fit in the growth phase.
-                        They fail because commitments accumulate invisibly.
-                    </p>
-                    <p>
-                        Subscriptions, hires, contracts, and "small" raises compound into a fixed-cost structure
-                        that outpaces awareness. By the time the P&L arrives, the money is already gone.
+                    <p className="text-neutral-400 max-w-2xl mx-auto text-lg">
+                        Your bank balance is a lie. Axis subtracts obligations from cash to show the truth.
                     </p>
                 </div>
-            </section>
-
-            {/* SECTION 3: DEFINITION (Grid) */}
-            <section className="py-24 border-t border-white/10">
-                <div className="grid md:grid-cols-2 gap-12">
-                    <div className="space-y-6">
-                        <h3 className="text-2xl font-bold text-white">Axis Is</h3>
-                        <ul className="space-y-4 text-white/70">
-                            <li className="flex gap-3 items-baseline">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 translate-y-0.5" />
-                                <span>A Decision Authority Layer</span>
-                            </li>
-                            <li className="flex gap-3 items-baseline">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 translate-y-0.5" />
-                                <span>A Financial Risk Enforcement Engine</span>
-                            </li>
-                            <li className="flex gap-3 items-baseline">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 translate-y-0.5" />
-                                <span>Institutional Memory for Commitments</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="space-y-6">
-                        <h3 className="text-2xl font-bold text-white/50">Axis Is Not</h3>
-                        <ul className="space-y-4 text-white/40">
-                            <li className="flex gap-3 items-baseline">
-                                <div className="w-1.5 h-1.5 rounded-full bg-white/20 translate-y-0.5" />
-                                <span>Budgeting Software</span>
-                            </li>
-                            <li className="flex gap-3 items-baseline">
-                                <div className="w-1.5 h-1.5 rounded-full bg-white/20 translate-y-0.5" />
-                                <span>Forecasting / Simulations</span>
-                            </li>
-                            <li className="flex gap-3 items-baseline">
-                                <div className="w-1.5 h-1.5 rounded-full bg-white/20 translate-y-0.5" />
-                                <span>AI Advice Chatbot</span>
-                            </li>
-                        </ul>
-                    </div>
+                <div className="inline-block p-12 rounded-[2.5rem] bg-gradient-to-b from-white/5 to-transparent border border-white/10 backdrop-blur-md">
+                    <span className="text-6xl md:text-8xl font-bold tracking-tighter text-white tabular-nums block">
+                        $142,380
+                    </span>
+                    <span className="text-sm text-emerald-400 uppercase tracking-widest mt-4 block">
+                        True Available Capital
+                    </span>
                 </div>
             </section>
 
-            {/* SECTION 4: CORE LOGIC */}
-            <section className="py-24 border-t border-white/10 space-y-12">
-                <div className="grid md:grid-cols-2 gap-12 items-start">
-                    <div className="space-y-6">
-                        <h3 className="text-2xl font-bold text-white">The Primitive: Decision Object</h3>
-                        <p className="text-white/70 leading-relaxed">
-                            In Axis, you do not "spend". You create a Decision.
-                            This object captures intent, reversibility, and financial commitment
-                            <em>before</em> any transaction occurs.
-                        </p>
-                    </div>
-
-                    {/* Simple Visualization */}
-                    <div className="p-6 rounded-lg border border-white/10 bg-white/5 font-mono text-sm space-y-3">
-                        <div className="flex justify-between text-white/30 text-xs uppercase tracking-wider">
-                            <span>Decision ID: DEC-1024</span>
-                            <span className="text-emerald-500">Active</span>
-                        </div>
-                        <div className="text-white">Intent: Hire Senior Engineer</div>
-                        <div className="text-white">Cost: $140,000 / yr</div>
-                        <div className="flex gap-2 pt-2">
-                            <span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Approved</span>
-                            <span className="px-2 py-1 bg-white/10 text-white/50 rounded text-xs">Reversible: No</span>
-                        </div>
+            {/* Risk States */}
+            <section className="space-y-12">
+                <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
+                    <div className="space-y-2">
+                        <h2 className="text-3xl font-semibold text-white">Risk States</h2>
+                        <p className="text-neutral-400">Three structural modes of operation.</p>
                     </div>
                 </div>
-            </section>
-
-            {/* SECTION 5: REAL SPENDING POWER */}
-            <section className="py-24 border-t border-white/10">
-                <div className="max-w-2xl space-y-8">
-                    <h3 className="text-sm font-mono text-emerald-500 uppercase tracking-widest">Logic, Not Forecasts</h3>
-                    <h2 className="text-3xl font-bold text-white">Real Spending Power</h2>
-                    <p className="text-white/70 text-lg">
-                        Axis subtracts all recurring commitments, near-term obligations, and safety buffers
-                        from your bank balance in real-time.
-                    </p>
-
-                    <div className="py-6">
-                        <span className="text-6xl font-bold tracking-tighter text-white tabular-nums">$142,380</span>
-                        <p className="text-sm text-white/40 mt-2 uppercase tracking-wider">True Available Capital</p>
-                    </div>
-                </div>
-            </section>
-
-            {/* SECTION 6: RISK STATES */}
-            <section className="py-24 border-t border-white/10 space-y-12">
-                <h3 className="text-2xl font-bold text-white">Structural Risk States</h3>
                 <div className="grid md:grid-cols-3 gap-6">
-                    <div className="p-6 border border-white/10 rounded-lg space-y-4">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                        <h4 className="font-bold text-white">STABLE</h4>
-                        <p className="text-sm text-white/60">Buffer full. Commitments low. Normal operations.</p>
-                    </div>
-                    <div className="p-6 border border-white/10 rounded-lg space-y-4">
-                        <div className="w-2 h-2 rounded-full bg-yellow-500" />
-                        <h4 className="font-bold text-white">TIGHT</h4>
-                        <p className="text-sm text-white/60">Buffer compressing. Recurring spend restricted.</p>
-                    </div>
-                    <div className="p-6 border border-white/10 rounded-lg space-y-4">
-                        <div className="w-2 h-2 rounded-full bg-red-500" />
-                        <h4 className="font-bold text-white">FRAGILE</h4>
-                        <p className="text-sm text-white/60">Buffer breached. Survival enforcement active.</p>
-                    </div>
+                    <RiskCard title="Stable" color="bg-emerald-500" desc="Buffer full. Normal ops." />
+                    <RiskCard title="Tight" color="bg-yellow-500" desc="Buffer compressing. Scrutiny up." />
+                    <RiskCard title="Fragile" color="bg-red-500" desc="Buffer breached. Survival mode." />
                 </div>
             </section>
 
-            {/* SECTION 7: HIRING */}
-            <section className="py-24 border-t border-white/10">
-                <div className="grid md:grid-cols-2 gap-12">
-                    <div>
-                        <h3 className="text-2xl font-bold text-white mb-4">Disciplined Hiring</h3>
-                        <p className="text-white/70 leading-relaxed">
-                            Jobs only exist on Axis if the capital is secured.
-                            This prevents emotional hiring sprees and protects workers from joining insolvent companies.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            {/* FOOTER */}
-            <footer className="pt-24 pb-12 border-t border-white/10 text-white/40 text-sm flex flex-col md:flex-row justify-between gap-6">
-                <div className="space-y-1">
-                    <p className="text-white font-medium">Axis</p>
-                    <p>Decision Authority Layer</p>
-                </div>
-                <div className="flex gap-8">
-                    <Link href="#" className="hover:text-white">Product</Link>
-                    <Link href="#" className="hover:text-white">Security</Link>
-                    <Link href="#" className="hover:text-white">Login</Link>
+            {/* Footer */}
+            <footer className="pt-24 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-500">
+                <p>&copy; 2024 Axis Systems Inc.</p>
+                <div className="flex gap-6 text-neutral-400">
+                    <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
+                    <Link href="#" className="hover:text-white transition-colors">Terms</Link>
+                    <Link href="#" className="hover:text-white transition-colors">Security</Link>
                 </div>
             </footer>
+        </div>
+    )
+}
 
+function RiskCard({ title, color, desc }: { title: string, color: string, desc: string }) {
+    return (
+        <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className={cn("w-2 h-2 rounded-full mb-4", color)} />
+            <h3 className="text-xl font-medium text-white mb-2">{title}</h3>
+            <p className="text-sm text-neutral-400">{desc}</p>
         </div>
     );
 }
