@@ -4,29 +4,45 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Scene } from '@/components/ui/hero-section';
-import { ShieldCheck, Lock, Layers, History, ArrowRight, StopCircle, Activity, Brain, Zap } from 'lucide-react';
-import { cn } from '@/lib/utils'; // Ensure cn is imported if used, though strict DemoOne didn't use it in map
+import { BentoGrid, BentoItem } from '@/components/ui/bento-grid';
+import { ShieldCheck, Lock, Layers, History, TrendingUp, Activity, Database, AlertOctagon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-const features = [
+// Axis-specific Bento Items
+const axisFeatures: BentoItem[] = [
     {
-        icon: ShieldCheck,
-        title: "Decision Authority",
-        description: "Validates actions before they happen. Not after.",
+        title: "Real Spending Power",
+        meta: "Live Calculation",
+        description: "Your bank balance minus commitments, safety buffers, and near-term payables. The only number that matters.",
+        icon: <TrendingUp className="w-5 h-5 text-emerald-500" />,
+        status: "Core Logic",
+        tags: ["Finance", "Safety", "Real-time"],
+        colSpan: 2,
+        hasPersistentHover: true,
     },
     {
-        icon: Lock,
-        title: "Risk Engine",
-        description: "Blocks commitments that breach safety rules.",
+        title: "Risk State Machine",
+        meta: "Automated",
+        description: "Dynamically switches between Stable, Tight, and Fragile modes based on runway.",
+        icon: <Activity className="w-5 h-5 text-yellow-500" />,
+        status: "Active",
+        tags: ["Protection", "Governance"],
     },
     {
-        icon: Layers,
-        title: "Operating System",
-        description: "Manages the state of your business risk structure.",
+        title: "Decision Memory",
+        meta: "Immutable",
+        description: "A permanent ledger of every hiring decision, subscription, and contract ever approved.",
+        icon: <Database className="w-5 h-5 text-purple-500" />,
+        tags: ["Audit", "History"],
+        colSpan: 2,
     },
     {
-        icon: History,
-        title: "Institutional Memory",
-        description: "A permanent ledger of intent and outcome.",
+        title: "Safety Rules",
+        meta: "Hard Blocking",
+        description: "Prevents making commitments that would breach your defined survival buffer.",
+        icon: <ShieldCheck className="w-5 h-5 text-red-500" />,
+        status: "Enforced",
+        tags: ["Compliance", "Invariants"],
     },
 ];
 
@@ -40,8 +56,8 @@ export default function LandingPage() {
             </div>
 
             {/* Main Content - Relative z-10 for interaction */}
-            <div className="relative z-10 flex flex-col items-center justify-center p-8 pt-32 pb-24 min-h-screen">
-                <div className="w-full max-w-6xl space-y-16">
+            <div className="relative z-10 flex flex-col items-center justify-start p-8 pt-32 pb-24 min-h-screen">
+                <div className="w-full max-w-6xl space-y-24">
 
                     {/* Hero Section */}
                     <div className="flex flex-col items-center text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -73,22 +89,9 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    {/* Features Grid (Glassmorphism) */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full animate-in fade-in zoom-in duration-1000 delay-300 fill-mode-forwards opacity-0" style={{ animationFillMode: 'forwards' }}>
-                        {features.map((feature, idx) => (
-                            <div
-                                key={idx}
-                                className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 h-48 flex flex-col justify-between items-start hover:bg-white/10 transition-colors duration-300 group"
-                            >
-                                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors text-white">
-                                    <feature.icon size={20} />
-                                </div>
-                                <div className="space-y-2">
-                                    <h3 className="text-base font-medium text-white">{feature.title}</h3>
-                                    <p className="text-sm text-neutral-400 leading-snug">{feature.description}</p>
-                                </div>
-                            </div>
-                        ))}
+                    {/* Bento Grid Section */}
+                    <div className="w-full flex justify-center animate-in fade-in zoom-in duration-1000 delay-300 fill-mode-forwards opacity-0" style={{ animationFillMode: 'forwards' }}>
+                        <BentoGrid items={axisFeatures} />
                     </div>
 
                 </div>
@@ -106,7 +109,7 @@ function BottomSections() {
         <div className="relative z-10 w-full max-w-6xl mx-auto px-6 pb-24 space-y-32">
 
             {/* The Problem */}
-            <section className="grid md:grid-cols-2 gap-16 items-center">
+            <section className="grid md:grid-cols-2 gap-16 items-center border-t border-white/10 pt-24">
                 <div className="space-y-6">
                     <h2 className="text-3xl font-semibold tracking-tight text-white">Why Businesses Die</h2>
                     <p className="text-neutral-400 text-lg leading-relaxed">
@@ -124,44 +127,6 @@ function BottomSections() {
                 </div>
             </section>
 
-            {/* Spending Power */}
-            <section className="text-center space-y-12">
-                <div className="space-y-6">
-                    <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10 px-4 py-1">
-                        Core Logic
-                    </Badge>
-                    <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-white">
-                        Real Spending Power
-                    </h2>
-                    <p className="text-neutral-400 max-w-2xl mx-auto text-lg">
-                        Your bank balance is a lie. Axis subtracts obligations from cash to show the truth.
-                    </p>
-                </div>
-                <div className="inline-block p-12 rounded-[2.5rem] bg-gradient-to-b from-white/5 to-transparent border border-white/10 backdrop-blur-md">
-                    <span className="text-6xl md:text-8xl font-bold tracking-tighter text-white tabular-nums block">
-                        $142,380
-                    </span>
-                    <span className="text-sm text-emerald-400 uppercase tracking-widest mt-4 block">
-                        True Available Capital
-                    </span>
-                </div>
-            </section>
-
-            {/* Risk States */}
-            <section className="space-y-12">
-                <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
-                    <div className="space-y-2">
-                        <h2 className="text-3xl font-semibold text-white">Risk States</h2>
-                        <p className="text-neutral-400">Three structural modes of operation.</p>
-                    </div>
-                </div>
-                <div className="grid md:grid-cols-3 gap-6">
-                    <RiskCard title="Stable" color="bg-emerald-500" desc="Buffer full. Normal ops." />
-                    <RiskCard title="Tight" color="bg-yellow-500" desc="Buffer compressing. Scrutiny up." />
-                    <RiskCard title="Fragile" color="bg-red-500" desc="Buffer breached. Survival mode." />
-                </div>
-            </section>
-
             {/* Footer */}
             <footer className="pt-24 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-500">
                 <p>&copy; 2024 Axis Systems Inc.</p>
@@ -173,14 +138,4 @@ function BottomSections() {
             </footer>
         </div>
     )
-}
-
-function RiskCard({ title, color, desc }: { title: string, color: string, desc: string }) {
-    return (
-        <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-            <div className={cn("w-2 h-2 rounded-full mb-4", color)} />
-            <h3 className="text-xl font-medium text-white mb-2">{title}</h3>
-            <p className="text-sm text-neutral-400">{desc}</p>
-        </div>
-    );
 }
