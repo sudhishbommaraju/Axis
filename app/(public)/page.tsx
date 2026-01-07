@@ -10,7 +10,7 @@ import Dock from '@/components/ui/dock';
 import {
     ShieldCheck, Lock, Layers, History, TrendingUp, Activity, Database,
     AlertOctagon, Home, LogIn, UserPlus, FileText, Globe, Cpu, Network,
-    Bell, Key, Fingerprint, BarChart3, Workflow, Briefcase
+    Bell, Key, Fingerprint, BarChart3, Workflow, Briefcase, TrendingDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
@@ -206,28 +206,37 @@ export default function LandingPage() {
     );
 }
 
+// 4. The Problem (Why Businesses Die)
+const problemFeatures: BentoItem[] = [
+    {
+        title: "The Invisible Accumulation",
+        description: "It isn't lack of vision. It's the invisible accumulation of commitments. Subscriptions, hires, and contracts compound into a fixed-cost structure that outpaces reality.",
+        icon: <TrendingDown className="w-5 h-5 text-red-500" />,
+        tags: ["Burn", "OpEx"],
+        colSpan: 2,
+    },
+    {
+        title: "Financial Lag",
+        description: "By the time the P&L arrives, the money is gone. [Lag: -30 Days] [Runway: < 3 Months]",
+        icon: <AlertOctagon className="w-5 h-5 text-orange-500" />,
+        status: "Critical",
+    },
+];
+
 function BottomSections() {
     return (
         <div className="relative z-10 w-full max-w-6xl mx-auto px-6 pb-24 space-y-16">
 
-            {/* The Problem */}
-            <section className="grid md:grid-cols-2 gap-16 items-center border-t border-white/10 pt-24">
-                <div className="space-y-6">
-                    <h2 className="text-3xl font-semibold tracking-tight text-white">Why Businesses Die</h2>
-                    <p className="text-neutral-400 text-lg leading-relaxed">
-                        It isn't lack of vision. It's the invisible accumulation of commitments.
-                        Subscriptions, hires, and contracts compound into a fixed-cost structure that outpaces reality.
-                        By the time the P&L arrives, the money is gone.
-                    </p>
+            {/* The Problem (Converted to Bento) */}
+            <div className="space-y-4 pt-10 border-t border-white/10">
+                <div className="text-center space-y-2">
+                    <h2 className="text-2xl font-semibold text-white">Why Businesses Die</h2>
+                    <p className="text-neutral-400">The math doesn't wait for your vision.</p>
                 </div>
-                <div className="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center">
-                    <div className="text-neutral-500 font-mono text-sm">
-                        [ P&L Lag: -30 Days ] <br />
-                        [ Cash Burn: Accelerating ] <br />
-                        [ Runway: &lt; 3 Months ]
-                    </div>
+                <div className="w-full flex justify-center">
+                    <BentoGrid items={problemFeatures} />
                 </div>
-            </section>
+            </div>
 
             {/* Footer */}
             <footer className="pt-24 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-500 pb-32">
