@@ -123,8 +123,8 @@ export default function LandingPage() {
             </div>
 
             {/* Main Content - Relative z-10 for interaction */}
-            <div className="relative z-10 flex flex-col items-center justify-start p-8 pt-16 pb-24 min-h-screen">
-                <div className="w-full max-w-6xl space-y-16">
+            <div className="relative z-10 flex flex-col items-center justify-start p-8 pt-10 pb-24 min-h-screen">
+                <div className="w-full max-w-6xl space-y-10">
 
                     {/* Hero Section */}
                     <div className="flex flex-col items-center text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -157,7 +157,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* Section 1: Core Logic (Bento) */}
-                    <div className="space-y-8 animate-in fade-in zoom-in duration-1000 delay-300 fill-mode-forwards opacity-0" style={{ animationFillMode: 'forwards' }}>
+                    <div className="space-y-4">
                         <div className="text-center space-y-2">
                             <h2 className="text-2xl font-semibold text-white">The Core Engine</h2>
                             <p className="text-neutral-400">Survival invariants enforced by code.</p>
@@ -168,7 +168,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* Section 2: Security & Operations */}
-                    <div className="space-y-8">
+                    <div className="space-y-4">
                         <div className="text-center space-y-2">
                             <h2 className="text-2xl font-semibold text-white">Security & Control</h2>
                             <p className="text-neutral-400">Military-grade governance for your capital.</p>
@@ -179,7 +179,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* Section 3: Integrations (Bento) */}
-                    <div className="space-y-8">
+                    <div className="space-y-4">
                         <div className="text-center space-y-2">
                             <h2 className="text-2xl font-semibold text-white">Intelligence Layer</h2>
                             <p className="text-neutral-400">Connected to your entire financial stack.</p>
