@@ -1,22 +1,28 @@
 "use client";
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Scene } from '@/components/ui/hero-section';
 import { BentoGrid, BentoItem } from '@/components/ui/bento-grid';
-import { ShieldCheck, Lock, Layers, History, TrendingUp, Activity, Database, AlertOctagon } from 'lucide-react';
+import Dock from '@/components/ui/dock';
+import {
+    ShieldCheck, Lock, Layers, History, TrendingUp, Activity, Database,
+    AlertOctagon, Home, LogIn, UserPlus, FileText, Globe, Cpu, Network
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRef } from 'react';
 
-// Axis-specific Bento Items
-const axisFeatures: BentoItem[] = [
+// Axis-specific Bento Items (Core Logic)
+const coreFeatures: BentoItem[] = [
     {
         title: "Real Spending Power",
         meta: "Live Calculation",
         description: "Your bank balance minus commitments, safety buffers, and near-term payables. The only number that matters.",
         icon: <TrendingUp className="w-5 h-5 text-emerald-500" />,
         status: "Core Logic",
-        tags: ["Finance", "Safety", "Real-time"],
+        tags: ["Finance", "Safety"],
         colSpan: 2,
         hasPersistentHover: true,
     },
@@ -26,12 +32,12 @@ const axisFeatures: BentoItem[] = [
         description: "Dynamically switches between Stable, Tight, and Fragile modes based on runway.",
         icon: <Activity className="w-5 h-5 text-yellow-500" />,
         status: "Active",
-        tags: ["Protection", "Governance"],
+        tags: ["Protection"],
     },
     {
         title: "Decision Memory",
         meta: "Immutable",
-        description: "A permanent ledger of every hiring decision, subscription, and contract ever approved.",
+        description: "A permanent ledger of every hiring decision, subscription, and contract with 'why' and 'who'.",
         icon: <Database className="w-5 h-5 text-purple-500" />,
         tags: ["Audit", "History"],
         colSpan: 2,
@@ -42,22 +48,54 @@ const axisFeatures: BentoItem[] = [
         description: "Prevents making commitments that would breach your defined survival buffer.",
         icon: <ShieldCheck className="w-5 h-5 text-red-500" />,
         status: "Enforced",
-        tags: ["Compliance", "Invariants"],
+        tags: ["Compliance"],
     },
 ];
 
+// Enterprise Modules (Expanded Content)
+const moduleFeatures: BentoItem[] = [
+    {
+        title: "AI Compliance",
+        description: "Automated checks against employment law and tax jurisdiction for every hire.",
+        icon: <Cpu className="w-5 h-5 text-sky-500" />,
+        tags: ["Legal", "AI"],
+    },
+    {
+        title: "Global Payroll Sync",
+        description: "Connects with Deel, Rippling, and Gusto to enforce salary caps.",
+        icon: <Globe className="w-5 h-5 text-blue-500" />,
+        colSpan: 1,
+    },
+    {
+        title: "Vendor Network",
+        description: "Pre-vetted integration with major SaaS providers for automated cost tracking.",
+        icon: <Network className="w-5 h-5 text-orange-500" />,
+        tags: ["SaaS", "Cost"],
+    },
+];
+
+
 export default function LandingPage() {
+    const router = useRouter();
+
+    const dockItems = [
+        { icon: Home, label: "Home", onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+        { icon: LogIn, label: "Login", onClick: () => router.push('/login') },
+        { icon: UserPlus, label: "Signup", onClick: () => router.push('/signup') },
+        { icon: FileText, label: "Docs", onClick: () => router.push('#') }, // Placeholder
+    ];
+
     return (
-        <div className="relative min-h-screen w-full bg-black text-white overflow-hidden font-sans selection:bg-white/20">
+        <div className="relative min-h-screen w-full bg-black text-white overflow-hidden font-sans selection:bg-white/20 pb-32">
 
             {/* 3D Scene Background - Absolute, behind everything */}
-            <div className='absolute inset-0 z-0'>
+            <div className='absolute inset-0 z-0 pointer-events-none'>
                 <Scene />
             </div>
 
             {/* Main Content - Relative z-10 for interaction */}
             <div className="relative z-10 flex flex-col items-center justify-start p-8 pt-32 pb-24 min-h-screen">
-                <div className="w-full max-w-6xl space-y-24">
+                <div className="w-full max-w-6xl space-y-32">
 
                     {/* Hero Section */}
                     <div className="flex flex-col items-center text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -89,16 +127,40 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    {/* Bento Grid Section */}
-                    <div className="w-full flex justify-center animate-in fade-in zoom-in duration-1000 delay-300 fill-mode-forwards opacity-0" style={{ animationFillMode: 'forwards' }}>
-                        <BentoGrid items={axisFeatures} />
+                    {/* Section 1: Core Logic (Bento) */}
+                    <div className="space-y-8 animate-in fade-in zoom-in duration-1000 delay-300 fill-mode-forwards opacity-0" style={{ animationFillMode: 'forwards' }}>
+                        <div className="text-center space-y-2">
+                            <h2 className="text-2xl font-semibold text-white">The Core Engine</h2>
+                            <p className="text-neutral-400">How Axis enforces survival.</p>
+                        </div>
+                        <div className="w-full flex justify-center">
+                            <BentoGrid items={coreFeatures} />
+                        </div>
+                    </div>
+
+                    {/* Section 2: Modules (Bento) */}
+                    <div className="space-y-8">
+                        <div className="text-center space-y-2">
+                            <h2 className="text-2xl font-semibold text-white">Enterprise Modules</h2>
+                            <p className="text-neutral-400">Expandable capabilities for scaling teams.</p>
+                        </div>
+                        <div className="w-full flex justify-center">
+                            <BentoGrid items={moduleFeatures} />
+                        </div>
                     </div>
 
                 </div>
             </div>
 
-            {/* Continuation of Axis Content (Styled to match new aesthetic) */}
+            {/* Continuation of Axis Content */}
             <BottomSections />
+
+            {/* Floating Dock Navigation */}
+            <div className="fixed bottom-8 left-0 right-0 z-50 pointer-events-none flex justify-center">
+                <div className="pointer-events-auto">
+                    <Dock items={dockItems} />
+                </div>
+            </div>
 
         </div>
     );
@@ -128,7 +190,7 @@ function BottomSections() {
             </section>
 
             {/* Footer */}
-            <footer className="pt-24 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-500">
+            <footer className="pt-24 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-500 pb-32">
                 <p>&copy; 2024 Axis Systems Inc.</p>
                 <div className="flex gap-6 text-neutral-400">
                     <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
