@@ -20,12 +20,22 @@ export const metadata: Metadata = {
 };
 
 import { Navbar } from "@/components/ui/navbar";
+import { NavBar } from "@/components/ui/tubelight-navbar";
+import { Home, Info, FileText, Shield, LogIn } from "lucide-react";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const navItems = [
+    { name: 'Home', url: '/', icon: Home },
+    { name: 'About', url: '/#about', icon: Info },
+    { name: 'Docs', url: '/docs', icon: FileText },
+    { name: 'Security', url: '/security', icon: Shield },
+    { name: 'Login', url: '/login', icon: LogIn }
+  ];
+
   return (
     // Force dark mode class on HTML to ensure Tailwind dark variants work
     <html lang="en" className="dark">
@@ -39,6 +49,9 @@ export default function RootLayout({
         {/* Layer 0: Global Background (Fixed, Passive) */}
         {/* We place it here so it persists across all pages including Auth and Public */}
         <AxisBackground className="fixed inset-0 z-0 pointer-events-none" />
+
+        {/* Global Navigation */}
+        <NavBar items={navItems} />
 
         {/* Layer 1: Content (Relative, Interactive) */}
         {/* We wrap children in a generic relative container to ensure they sit above the background */}
