@@ -228,7 +228,10 @@ function BottomSections() {
 
             {/* Footer */}
             <footer className="pt-24 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-500 pb-32">
-                <p>&copy; 2024 Axis Systems Inc.</p>
+                <div className="flex flex-col gap-1">
+                    <p>&copy; 2024 Axis Systems Inc.</p>
+                    <p className="text-[10px] text-neutral-600 font-mono italic">SYS_REF: {new Date().toISOString().split('T')[0]}_v1.0.4_FINAL</p>
+                </div>
                 <div className="flex gap-6 text-neutral-400">
                     <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
                     <Link href="#" className="hover:text-white transition-colors">Terms</Link>
