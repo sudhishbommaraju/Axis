@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google"; // Keep fonts if they work, or remove if causing issues. Keeping for now.
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AxisBackground } from "@/components/ui/axis-background";
 import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
@@ -33,8 +33,8 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body
         className={cn(
-          geistSans.variable,
-          geistMono.variable,
+          inter.variable,
+          jetbrainsMono.variable,
           "antialiased bg-black text-white min-h-screen selection:bg-emerald-500/30 selection:text-emerald-200"
         )}
       >
