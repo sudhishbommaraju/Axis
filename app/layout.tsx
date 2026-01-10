@@ -19,22 +19,13 @@ export const metadata: Metadata = {
   description: "The operating system for financial survival. Axis enforces commitments and manages risk states.",
 };
 
-import { Navbar } from "@/components/ui/navbar";
-import { NavBar } from "@/components/ui/tubelight-navbar";
-import { Home, Info, FileText, Shield, LogIn } from "lucide-react";
+import { AxisNavBar } from "@/components/ui/axis-navbar";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const navItems = [
-    { name: 'Home', url: '/', icon: Home },
-    { name: 'About', url: '/#about', icon: Info },
-    { name: 'Docs', url: '/docs', icon: FileText },
-    { name: 'Security', url: '/security', icon: Shield },
-    { name: 'Login', url: '/login', icon: LogIn }
-  ];
 
   return (
     // Force dark mode class on HTML to ensure Tailwind dark variants work
@@ -51,7 +42,7 @@ export default function RootLayout({
         <AxisBackground className="fixed inset-0 z-0 pointer-events-none" />
 
         {/* Global Navigation */}
-        <NavBar items={navItems} />
+        <AxisNavBar />
 
         {/* Layer 1: Content (Relative, Interactive) */}
         {/* We wrap children in a generic relative container to ensure they sit above the background */}
