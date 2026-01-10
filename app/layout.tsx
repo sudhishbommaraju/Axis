@@ -40,9 +40,6 @@ export default function RootLayout({
         {/* We place it here so it persists across all pages including Auth and Public */}
         <AxisBackground className="fixed inset-0 z-0 pointer-events-none" />
 
-        {/* Global Navigation */}
-        <Navbar />
-
         {/* Layer 1: Content (Relative, Interactive) */}
         {/* We wrap children in a generic relative container to ensure they sit above the background */}
         <div className="relative z-10 w-full min-h-screen flex flex-col">
