@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Play, RotateCcw, ShieldCheck, AlertCircle, Activity, ArrowRight, CheckCircle2, XCircle } from "lucide-react"
+import { Play, RotateCcw, ShieldCheck, AlertCircle, Activity, ArrowRight, CheckCircle2, XCircle, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "./button"
+import { AILoader } from "./ai-loader"
 
 interface SimulationStep {
     id: number
@@ -52,6 +53,7 @@ const FIXED_SCENARIO: SimulationStep[] = [
 
 export function AxisSimulator() {
     const [isRunning, setIsRunning] = useState(false)
+    const [isThinking, setIsThinking] = useState(false)
     const [currentStepIndex, setCurrentStepIndex] = useState(-1)
     const [balance, setBalance] = useState(100)
     const [history, setHistory] = useState<SimulationStep[]>([])
@@ -68,6 +70,11 @@ export function AxisSimulator() {
         if (isRunning) return
         reset()
         setIsRunning(true)
+        setIsThinking(true)
+
+        // Artificial "AI Thinking" delay
+        await new Promise(resolve => setTimeout(resolve, 2500))
+        setIsThinking(false)
 
         for (let i = 0; i < FIXED_SCENARIO.length; i++) {
             await new Promise(resolve => setTimeout(resolve, 1500))
@@ -170,55 +177,71 @@ export function AxisSimulator() {
                     <div className="space-y-4">
                         <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-[0.2em]">Reality Ledger</p>
 
-                        <AnimatePresence initial={false}>
-                            {history.length === 0 ? (
+                        <AnimatePresence mode="wait">
+                            {isThinking ? (
                                 <motion.div
+                                    key="thinking"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 1.1 }}
+                                    className="flex flex-col items-center justify-center h-64"
+                                >
+                                    <Sparkles className="w-8 h-8 text-emerald-500 animate-pulse mb-2" />
+                                    <AILoader />
+                                    <p className="text-[10px] font-mono text-neutral-600 uppercase tracking-[0.3em] mt-4">Analyzing Invariants...</p>
+                                </motion.div>
+                            ) : history.length === 0 ? (
+                                <motion.div
+                                    key="empty"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
                                     className="flex flex-col items-center justify-center h-48 text-center"
                                 >
                                     <ShieldCheck className="w-12 h-12 text-neutral-800 mb-4" />
                                     <p className="text-xs font-mono text-neutral-600 uppercase tracking-widest">System Ready<br />Await Instructions</p>
                                 </motion.div>
                             ) : (
-                                history.map((step) => (
-                                    <motion.div
-                                        key={step.id}
-                                        initial={{ x: 20, opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        className={cn(
-                                            "p-5 rounded-2xl border flex flex-col gap-3",
-                                            step.result === "allowed"
-                                                ? "bg-emerald-500/5 border-emerald-500/20"
-                                                : "bg-red-500/5 border-red-500/20"
-                                        )}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            {step.result === "allowed" ? (
-                                                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                                            ) : (
-                                                <AlertCircle className="w-5 h-5 text-red-500" />
+                                <div className="space-y-4">
+                                    {history.map((step) => (
+                                        <motion.div
+                                            key={step.id}
+                                            initial={{ x: 20, opacity: 0 }}
+                                            animate={{ x: 0, opacity: 1 }}
+                                            className={cn(
+                                                "p-5 rounded-2xl border flex flex-col gap-3",
+                                                step.result === "allowed"
+                                                    ? "bg-emerald-500/5 border-emerald-500/20"
+                                                    : "bg-red-500/5 border-red-500/20"
                                             )}
-                                            <div className="flex-1">
-                                                <p className={cn(
-                                                    "text-[10px] font-bold uppercase tracking-widest",
-                                                    step.result === "allowed" ? "text-emerald-500" : "text-red-500"
-                                                )}>
-                                                    {step.result === "allowed" ? "AUTHORITY_PASSED" : "AUTHORITY_BLOCKED"}
-                                                </p>
-                                                <p className="text-xs font-bold text-white mt-0.5">{step.title}</p>
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                {step.result === "allowed" ? (
+                                                    <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                                                ) : (
+                                                    <AlertCircle className="w-5 h-5 text-red-500" />
+                                                )}
+                                                <div className="flex-1">
+                                                    <p className={cn(
+                                                        "text-[10px] font-bold uppercase tracking-widest",
+                                                        step.result === "allowed" ? "text-emerald-500" : "text-red-500"
+                                                    )}>
+                                                        {step.result === "allowed" ? "AUTHORITY_PASSED" : "AUTHORITY_BLOCKED"}
+                                                    </p>
+                                                    <p className="text-xs font-bold text-white mt-0.5">{step.title}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <p className="text-[11px] leading-relaxed text-neutral-400 font-medium">
-                                            {step.explanation}
-                                        </p>
-                                        {step.balanceChange !== 0 && (
-                                            <div className="pt-2 border-t border-white/5 mt-1">
-                                                <span className="text-[10px] font-mono text-emerald-500/60 uppercase">Net Delta: {step.balanceChange > 0 ? "+" : ""}{step.balanceChange.toFixed(2)} USD</span>
-                                            </div>
-                                        )}
-                                    </motion.div>
-                                ))
+                                            <p className="text-[11px] leading-relaxed text-neutral-400 font-medium">
+                                                {step.explanation}
+                                            </p>
+                                            {step.balanceChange !== 0 && (
+                                                <div className="pt-2 border-t border-white/5 mt-1">
+                                                    <span className="text-[10px] font-mono text-emerald-500/60 uppercase">Net Delta: {step.balanceChange > 0 ? "+" : ""}{step.balanceChange.toFixed(2)} USD</span>
+                                                </div>
+                                            )}
+                                        </motion.div>
+                                    ))}
+                                </div>
                             )}
                         </AnimatePresence>
                     </div>
