@@ -65,8 +65,8 @@ export function NavBar({ items, className }: NavBarProps) {
                                     initial={false}
                                     transition={{
                                         type: "spring",
-                                        stiffness: 300,
-                                        damping: 30,
+                                        stiffness: 260,
+                                        damping: 35,
                                     }}
                                 >
                                     <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-emerald-500 rounded-t-full">
