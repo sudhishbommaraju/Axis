@@ -2,6 +2,8 @@
 import { SignInPage, Testimonial } from "@/components/ui/sign-in";
 import { useRouter } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 const sampleTestimonials: Testimonial[] = [
     {
         avatarSrc: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&q=80&fit=crop",
@@ -24,6 +26,7 @@ const sampleTestimonials: Testimonial[] = [
 ];
 
 export default function LoginPage() {
+    console.log("LoginPage Mounting...");
     const router = useRouter();
 
     const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {

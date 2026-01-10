@@ -1,6 +1,8 @@
-DEPLOYMENT FORCE V8
-TIMESTAMP: 2026-01-09T19:15:56-07:00
-ACTION: PROFESSIONAL TYPOGRAPHY UPGRADE (INTER + JETBRAINS MONO)
-BONUS: CINEMATIC PAGE TRANSITIONS SINC
-STATUS: FINAL PRODUCTION SYNC
-Vercel should now reflect the full visual overhaul.
+DEPLOYMENT FORCE V10
+TIMESTAMP: 2026-01-09T20:41:00-07:00
+ACTION: HARDEN AUTH PAGES (FIX BLANK SCREEN)
+STATUS: CLEAN BUILD TRIGGERED
+- Removed @import "tw-animate-css" (redundant/conflict)
+- Forced dynamic rendering on /login and /signup
+- Added mounting logs for verification
+Vercel should now serve the login page consistently.
