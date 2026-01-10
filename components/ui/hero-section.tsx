@@ -105,8 +105,8 @@ export const Scene = () => {
     const [cameraPosition] = React.useState<[number, number, number]>([5, 5, 20]);
 
     return (
-        <div className="w-full h-full z-0">
-            <Canvas camera={{ position: cameraPosition, fov: 40 }}>
+        <div className="w-full h-full z-0 pointer-events-none">
+            <Canvas camera={{ position: cameraPosition, fov: 40 }} style={{ pointerEvents: 'none' }}>
                 <ambientLight intensity={15} />
                 <directionalLight position={[10, 10, 5]} intensity={15} />
                 <AnimatedBoxes />

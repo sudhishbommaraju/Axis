@@ -8,6 +8,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { ArrowRight, Mail, Gem, Lock, Eye, EyeOff, ArrowLeft, X, AlertCircle, PartyPopper, Loader, Diamond, User, ShieldCheck, FilePlus } from "lucide-react";
 // Importing animation components from framer-motion
 import { AnimatePresence, motion, useInView, Variants, Transition } from "framer-motion";
+import { login } from "@/app/actions/auth";
 
 // --- CONFETTI LOGIC ---
 import type { GlobalOptions as ConfettiGlobalOptions, CreateTypes as ConfettiInstance, Options as ConfettiOptions } from "canvas-confetti"
@@ -79,6 +80,7 @@ export function TextLoop({ children, className, interval = 2, transition = { dur
 interface BlurFadeProps { children: React.ReactNode; className?: string; variant?: { hidden: { y: number }; visible: { y: number } }; duration?: number; delay?: number; yOffset?: number; inView?: boolean; inViewMargin?: string; blur?: string; }
 function BlurFade({ children, className, variant, duration = 0.4, delay = 0, yOffset = 6, inView = true, inViewMargin = "-50px", blur = "6px" }: BlurFadeProps) {
     const ref = useRef(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const inViewResult = useInView(ref, { once: true, margin: inViewMargin as any });
     const isInView = !inView || inViewResult;
     const defaultVariants: Variants = {
@@ -188,15 +190,22 @@ export const AuthComponent = ({ logo = <DefaultLogo />, brandName = "Axis" }: Au
         const fire = confettiRef.current?.fire;
         if (fire) {
             const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
-            const particleCount = 50;
-            fire({ ...defaults, particleCount, origin: { x: 0, y: 1 }, angle: 60 });
-            fire({ ...defaults, particleCount, origin: { x: 1, y: 1 }, angle: 120 });
+            fire({ ...defaults, particleCount: 50, origin: { x: 0, y: 1 }, angle: 60 });
+            fire({ ...defaults, particleCount: 50, origin: { x: 1, y: 1 }, angle: 120 });
         }
     };
 
-    const handleFinalSubmit = (e: React.FormEvent) => {
+    const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (modalStatus !== 'closed' || authStep !== 'confirmPassword') return;
+        // Here we trigger the server action to set the session cookie
+        // In a real app, we would validate email/password/entropy first.
+        // For this demo, we trust the flow and simply set the role.
+
+        // Ensure accountType is valid
+        if (accountType) {
+            await login(accountType);
+        }
+        return;
 
         if (password !== confirmPassword) {
             setModalErrorMessage("Passwords do not match!");
@@ -323,7 +332,7 @@ export const AuthComponent = ({ logo = <DefaultLogo />, brandName = "Axis" }: Au
                                     ].map((type, i) => (
                                         <button
                                             key={type.id}
-                                            onClick={() => { setAccountType(type.id as any); setAuthStep('email'); }}
+                                            onClick={() => { setAccountType(type.id as "owner" | "customer" | "applicant"); setAuthStep('email'); }}
                                             className={cn(
                                                 "group flex items-center gap-4 w-full p-4 rounded-2xl border transition-all duration-300",
                                                 "bg-white/5 border-white/5 hover:border-emerald-500/50 hover:bg-emerald-500/5"

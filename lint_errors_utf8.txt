@@ -1,0 +1,132 @@
+﻿
+> axis-core@0.1.0 lint
+> eslint
+
+
+C:\Users\srira\OneDrive\Desktop\Axis\app\(public)\page.tsx
+   4:10  warning  'useRouter' is defined but never used      @typescript-eslint/no-unused-vars
+   8:10  warning  'ShieldCheck' is defined but never used    @typescript-eslint/no-unused-vars
+   8:23  warning  'Lock' is defined but never used           @typescript-eslint/no-unused-vars
+   8:29  warning  'Activity' is defined but never used       @typescript-eslint/no-unused-vars
+  10:10  warning  'AxisSimulator' is defined but never used  @typescript-eslint/no-unused-vars
+  11:10  warning  'motion' is defined but never used         @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\app\(public)\security\page.tsx
+  5:8   warning  'Link' is defined but never used    @typescript-eslint/no-unused-vars
+  6:10  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\app\(public)\signup\page.tsx
+  14:11  warning  'router' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\app\platform\decisions\page.tsx
+  39:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\srira\OneDrive\Desktop\Axis\app\platform\decisions\page.tsx:39:9
+  37 |         const options = generateOptions(snapshot);
+  38 |         const newResults = options.map(opt => simulateOption(snapshot, opt, constraints));
+> 39 |         setResults(newResults);
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  40 |
+  41 |         // Preserve selection if possible, otherwise select first
+  42 |         if (selectedResult) {  react-hooks/set-state-in-effect
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\auth\auth-shell.tsx
+  4:10  warning  'cn' is defined but never used    @typescript-eslint/no-unused-vars
+  5:10  warning  'Slot' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\platform\decision-table.tsx
+  8:10  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\platform\financial-input.tsx
+  120:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\ui\about-section.tsx
+    4:50   warning  'Users' is defined but never used                                @typescript-eslint/no-unused-vars
+   50:99   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+   57:35   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  120:47   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  120:67   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  120:76   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  120:81   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  120:101  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  120:154  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  150:84   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  150:139  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\ui\ai-loader.tsx
+  3:10  warning  'cn' is defined but never used                 @typescript-eslint/no-unused-vars
+  7:12  warning  'count' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  7:19  warning  'setCount' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\ui\axis-simulator.tsx
+  3:27  warning  'useEffect' is defined but never used   @typescript-eslint/no-unused-vars
+  5:63  warning  'ArrowRight' is defined but never used  @typescript-eslint/no-unused-vars
+  5:89  warning  'XCircle' is defined but never used     @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\ui\bento-grid.tsx
+   5:5  warning  'CheckCircle' is defined but never used  @typescript-eslint/no-unused-vars
+   6:5  warning  'Clock' is defined but never used        @typescript-eslint/no-unused-vars
+   7:5  warning  'Star' is defined but never used         @typescript-eslint/no-unused-vars
+   8:5  warning  'TrendingUp' is defined but never used   @typescript-eslint/no-unused-vars
+   9:5  warning  'Video' is defined but never used        @typescript-eslint/no-unused-vars
+  10:5  warning  'Globe' is defined but never used        @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\ui\hero-section.tsx
+  5:41  warning  'Mesh' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\ui\sign-in.tsx
+  51:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\ui\sign-up.tsx
+    8:28  warning  'Gem' is defined but never used                       @typescript-eslint/no-unused-vars
+   18:7   warning  'ConfettiContext' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   82:79  error    Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  323:50  warning  'i' is defined but never used                         @typescript-eslint/no-unused-vars
+  326:88  error    Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+
+C:\Users\srira\OneDrive\Desktop\Axis\components\ui\tubelight-navbar.tsx
+  23:12  warning  'isMobile' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\lib\decision-engine\generator.ts
+  3:33  warning  'snapshot' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\lib\decision-engine\simulator.ts
+  11:9   error  'currentHeadcount' is never reassigned. Use 'const' instead       prefer-const
+  12:9   error  'currentMonthlyRevenue' is never reassigned. Use 'const' instead  prefer-const
+  25:13  error  'monthlyRevenue' is never reassigned. Use 'const' instead         prefer-const
+
+C:\Users\srira\OneDrive\Desktop\Axis\scripts\audit_chaos.js
+    2:9   warning  'performance' is assigned a value but never used         @typescript-eslint/no-unused-vars
+    2:25  error    A `require()` style import is forbidden                  @typescript-eslint/no-require-imports
+    3:12  error    A `require()` style import is forbidden                  @typescript-eslint/no-require-imports
+   87:11  warning  'originalLedgerSize' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  105:14  warning  'e' is defined but never used                            @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\scripts\benchmark_logic.js
+   2:25  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  66:16  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\srira\OneDrive\Desktop\Axis\scripts\stress_test_logic.js
+    2:25  error    A `require()` style import is forbidden                   @typescript-eslint/no-require-imports
+    3:12  error    A `require()` style import is forbidden                   @typescript-eslint/no-require-imports
+   13:7   warning  'SAFETY_BUFFER_RATIO' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   87:15  warning  'results' is assigned a value but never used              @typescript-eslint/no-unused-vars
+   93:9   warning  'operationsCount' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  110:11  warning  'avgBatchLatency' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  114:11  warning  'finalMemory' is assigned a value but never used          @typescript-eslint/no-unused-vars
+
+C:\Users\srira\OneDrive\Desktop\Axis\scripts\verify_kill_list.js
+    2:9   warning  'performance' is assigned a value but never used  @typescript-eslint/no-unused-vars
+    2:25  error    A `require()` style import is forbidden           @typescript-eslint/no-require-imports
+  105:18  warning  'e' is defined but never used                     @typescript-eslint/no-unused-vars
+  192:16  error    A `require()` style import is forbidden           @typescript-eslint/no-require-imports
+
+Γ£û 67 problems (25 errors, 42 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
+

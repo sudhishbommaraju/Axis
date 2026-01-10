@@ -8,6 +8,7 @@ import { Scene } from '@/components/ui/hero-section';
 import { ShieldCheck, Lock, Activity } from 'lucide-react';
 import { AboutSection } from '@/components/ui/about-section';
 import { AxisSimulator } from '@/components/ui/axis-simulator';
+import { LiveDemo } from '@/components/ui/live-demo';
 import { motion } from 'framer-motion';
 
 export default function LandingPage() {
@@ -41,9 +42,9 @@ export default function LandingPage() {
                             <div className="flex flex-col sm:flex-row gap-4 items-center pt-8">
                                 <Button
                                     asChild
-                                    className="text-sm px-10 py-7 rounded-xl bg-white text-black border border-white/10 shadow-lg shadow-white/5 hover:bg-white/90 hover:scale-105 transition-all duration-300 font-bold text-lg"
+                                    className="text-sm px-10 py-7 rounded-xl bg-white text-black border border-white/10 shadow-lg shadow-white/5 hover:bg-white/90 hover:scale-105 transition-all duration-300 font-bold text-lg cursor-pointer"
                                 >
-                                    <Link href="/demo">
+                                    <Link href="#demo" scroll={true}>
                                         Run Live Demo
                                     </Link>
                                 </Button>
@@ -51,7 +52,10 @@ export default function LandingPage() {
                         </div>
                     </section>
 
-                    {/* 2. ABOUT AXIS SECTION */}
+                    {/* 2. LIVE DEMO SECTION */}
+                    <LiveDemo />
+
+                    {/* 3. ABOUT AXIS SECTION */}
                     <div id="about">
                         <AboutSection />
                     </div>

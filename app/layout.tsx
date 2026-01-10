@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { AxisBackground } from "@/components/ui/axis-background";
 import { cn } from "@/lib/utils";
@@ -7,11 +7,8 @@ import { cn } from "@/lib/utils";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -35,8 +32,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.variable,
-          jetbrainsMono.variable,
-          "antialiased bg-black text-white min-h-screen selection:bg-emerald-500/30 selection:text-emerald-200"
+          "antialiased bg-black text-white min-h-screen selection:bg-emerald-500/30 selection:text-emerald-200 font-sans"
         )}
       >
         {/* Layer 0: Global Background (Fixed, Passive) */}

@@ -11,7 +11,7 @@ export default function SignupPage() {
         console.log("SignupPage [Axis Authority Integration] Mounting...");
     }, []);
 
-    const router = useRouter();
+
 
     return (
         <AuthComponent

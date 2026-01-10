@@ -1,34 +1,33 @@
 "use client";
 
 import React from 'react';
-import { cn } from "@/lib/utils";
-import { ShieldCheck, Target, Zap, Search, Users } from 'lucide-react';
+import { ShieldCheck, Target, Zap, TrendingDown, Users, BrainCircuit } from 'lucide-react';
 
 const principles = [
     {
-        title: "Correctness over convenience",
-        description: "System integrity is non-negotiable. We favor explicit manual verification over automated convenience if it preserves correctness.",
-        icon: <ShieldCheck className="w-5 h-5 text-emerald-500" />
-    },
-    {
-        title: "Determinism over guesswork",
-        description: "Every state transition must be reproducible. Chaos is simulated, not accidental.",
-        icon: <Zap className="w-5 h-5 text-yellow-500" />
-    },
-    {
-        title: "Explicit constraints",
-        description: "Assumptions are the root of failure. Axis enforces invariants at the protocol level.",
+        title: "Constraints over guesswork",
+        description: "Assumptions kill businesses. Axis enforces financial constraints to reveal what is actually possible.",
         icon: <Target className="w-5 h-5 text-red-500" />
     },
     {
-        title: "Defense-in-depth",
-        description: "Multiple layers of verification ensure that even if one protocol fails, the system state remains valid.",
-        icon: <Search className="w-5 h-5 text-blue-500" />
+        title: "Simulation over intuition",
+        description: "Don't guess if you can afford it. Simulate the cash flow impact before committing a single dollar.",
+        icon: <Zap className="w-5 h-5 text-yellow-500" />
     },
     {
         title: "Explainability",
-        description: "Audit trails are not just logs; they are human-readable narratives of system logic.",
-        icon: <Users className="w-5 h-5 text-purple-500" />
+        description: "No black box AI advice. Just clear, deterministic cause-and-effect showing why a decision passes or fails.",
+        icon: <BrainCircuit className="w-5 h-5 text-blue-500" />
+    },
+    {
+        title: "Risk Visibility",
+        description: "See the cliff before you fall off it. We model infinite downside scenarios so you don't have to live them.",
+        icon: <TrendingDown className="w-5 h-5 text-orange-500" />
+    },
+    {
+        title: "Decision Support",
+        description: "We don't replace the owner. We give the owner the flashlight to see in the dark.",
+        icon: <ShieldCheck className="w-5 h-5 text-emerald-500" />
     }
 ];
 
@@ -45,26 +44,26 @@ export function AboutSection() {
                         </h2>
                         <div className="space-y-4 text-lg text-white leading-relaxed font-medium">
                             <p>
-                                Axis is a systems platform designed to model, validate, and stress-test complex systems under real-world constraints. It acts as a decision authority layer, sitting between intent and execution to ensure that every action complies with defined system invariants.
+                                Axis is a decision intelligence and risk simulation platform built specifically for local business owners. It sits between your ambition and your bank account, helping you understand which growth decisions are safe, which are risky, and which are impossible.
                             </p>
                             <p>
-                                In an era of rapid feature deployment, Axis prioritizes correctness, consistency, and resilience over speed. It is built for environments where failure is not an option and where &quot;eventual consistency&quot; is not enough.
+                                Too many good businesses fail because risks are invisible until it&apos;s too late. Axis changes that by simulating the financial impact of your decisions—hiring, marketing, expanding—before you sign the contract.
                             </p>
                         </div>
                     </div>
                     <div className="p-8 rounded-2xl bg-white/5 border border-white/20 space-y-4">
-                        <h3 className="text-xl font-bold text-white">Core Priority</h3>
+                        <h3 className="text-xl font-bold text-white">The Axis Promise</h3>
                         <p className="text-white font-medium">
-                            Axis operates on the principle that a system&apos;s strength is defined by its behavior under adversarial conditions. We don&apos;t just optimize for the happy path; we harden for the edge case.
+                            We don&apos;t predict the future. We reveal the constraints of the present so you can survive the future.
                         </p>
                         <div className="pt-4 flex gap-4">
                             <div className="flex flex-col">
-                                <span className="text-2xl font-bold text-emerald-500">100%</span>
-                                <span className="text-xs text-neutral-500 uppercase tracking-wider">Deterministic</span>
+                                <span className="text-2xl font-bold text-emerald-500">Zero</span>
+                                <span className="text-xs text-neutral-500 uppercase tracking-wider">Hallucinations</span>
                             </div>
                             <div className="flex flex-col border-l border-white/10 pl-4">
-                                <span className="text-2xl font-bold text-white">Invariant</span>
-                                <span className="text-xs text-neutral-500 uppercase tracking-wider">Focused</span>
+                                <span className="text-2xl font-bold text-white">100%</span>
+                                <span className="text-xs text-neutral-500 uppercase tracking-wider">Deterministic</span>
                             </div>
                         </div>
                     </div>
@@ -73,26 +72,21 @@ export function AboutSection() {
                 {/* Step 2: What Axis Does */}
                 <div className="space-y-8">
                     <div className="max-w-3xl">
-                        <h3 className="text-2xl font-bold text-white">Capabilities</h3>
-                        <p className="mt-2 text-white italic font-medium">&quot;Axis is a control and verification layer, not a dashboard.&quot;</p>
+                        <h3 className="text-2xl font-bold text-white">What Axis Does</h3>
+                        <p className="mt-2 text-white italic font-medium">&quot;Simulate risk. Reveal tradeoffs. Enforce survival.&quot;</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
-                            { title: "Process Simulation", desc: "Model financial, transactional, and operational processes with high fidelity." },
-                            { title: "Invariant Enforcement", desc: "Hard-coding safety rules that cannot be bypassed by users or logic errors." },
-                            { title: "Hostile Testing", desc: "Simulation of race conditions, concurrency, and invalid state injections." },
-                            { title: "Deterministic Auditing", desc: "Complete traceability for every state change with zero guesswork." }
+                            { title: "Financial Snapshots", desc: "Connects to your real books (simulated) to establish a baseline of truth." },
+                            { title: "Hiring Simulations", desc: "Test if you can truly afford that new employee, factoring in taxes, delays, and ramp-up." },
+                            { title: "Runway Stress Tests", desc: "See exactly how long you survive under different burn rates and revenue drops." },
+                            { title: "Tradeoff Analysis", desc: "Compare options side-by-side: Aggressive growth vs. Safe stability." }
                         ].map((feature, i) => (
                             <div key={i} className="p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
                                 <h4 className="font-bold text-white mb-2">{feature.title}</h4>
                                 <p className="text-sm text-white/90 leading-relaxed">{feature.desc}</p>
                             </div>
                         ))}
-                    </div>
-                    <div className="flex flex-wrap gap-3 pt-4">
-                        <span className="px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-medium uppercase tracking-wider">Not Analytics</span>
-                        <span className="px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-medium uppercase tracking-wider">Not Visualization Only</span>
-                        <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-medium uppercase tracking-wider">Control Layer</span>
                     </div>
                 </div>
 
@@ -101,18 +95,18 @@ export function AboutSection() {
                     <div className="max-w-3xl space-y-4">
                         <h3 className="text-2xl font-bold text-white">Why Axis Exists</h3>
                         <p className="text-white text-lg font-medium">
-                            Many system failures occur not because of obvious bugs, but because systems are never tested under real stress. Axis surfaces failure modes early — before they cause silent corruption or incidents.
+                            Local business decisions fail not because owners are careless, but because cash flow risks are complex and non-intuitive. Axis makes these risks visible instantly.
                         </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-4">
-                            <h4 className="text-sm font-semibold text-neutral-500 uppercase tracking-widest">Hostile Assumptions</h4>
+                            <h4 className="text-sm font-semibold text-neutral-500 uppercase tracking-widest">We Reveal The Hidden Costs</h4>
                             <ul className="space-y-3">
                                 {[
-                                    "Requests arrive out of sequence",
-                                    "Users will attempt forbidden states",
-                                    "Inputs are malformed or malicious",
-                                    "System operates under extreme saturation"
+                                    "Hidden payroll burdens & taxes",
+                                    "Revenue lag from new marketing",
+                                    "Compound burn rates",
+                                    "The true cost of low runway"
                                 ].map((item, i) => (
                                     <li key={i} className="flex items-center gap-3 text-neutral-300">
                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -123,7 +117,7 @@ export function AboutSection() {
                         </div>
                         <div className="bg-black/40 p-6 rounded-xl border border-white/5 border-dashed">
                             <p className="text-sm text-neutral-400 italic leading-relaxed">
-                                &quot;We assume the environment is hostile, the network is unreliable, and the clock is a liar. Axis builds confidence by proving resilience against these realities.&quot;
+                                &quot;Axis isn&apos;t here to tell you &apos;Good job&apos;. It&apos;s here to tell you &apos;You will run out of cash in 4 months if you hire Bob&apos;. That is actionable intelligence.&quot;
                             </p>
                         </div>
                     </div>
@@ -132,10 +126,10 @@ export function AboutSection() {
                 {/* Step 4: Design Principles */}
                 <div className="space-y-12">
                     <div className="text-center max-w-2xl mx-auto space-y-4">
-                        <h3 className="text-2xl font-semibold text-white">Design Principles</h3>
-                        <p className="text-neutral-400">The philosophical foundation of the Axis engine.</p>
+                        <h3 className="text-2xl font-semibold text-white">Our Principles</h3>
+                        <p className="text-neutral-400">Built for clarity in a world of noise.</p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
                         {principles.map((p, i) => (
                             <div key={i} className="space-y-3">
                                 <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
@@ -151,17 +145,17 @@ export function AboutSection() {
                 {/* Step 5: Who Axis Is For */}
                 <div className="pt-16 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-12">
                     <div className="space-y-4">
-                        <h3 className="text-2xl font-semibold text-white">Target Audience</h3>
+                        <h3 className="text-2xl font-semibold text-white">Who Use Axis?</h3>
                         <p className="text-neutral-400 leading-relaxed">
-                            Axis is built for serious operators who need more than just monitoring. It is for those who need to guarantee system behavior.
+                            Axis is for decision-makers who want sleep at night. It&apos;s for owners who refuse to gamble with their employees&apos; livelihoods.
                         </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
-                            "Critical Systems Engineers",
-                            "Financial Logic Developers",
-                            "Compliance & Audit Teams",
-                            "Scale & Concurrency Architects"
+                            "Local Business Owners",
+                            "Founders Managing Runway",
+                            "Operations Managers",
+                            "Fiscal Conservatives"
                         ].map((audience, i) => (
                             <div key={i} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
                                 <div className="w-2 h-2 rounded-full bg-emerald-500" />
