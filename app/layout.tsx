@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 import { AxisNavBar } from "@/components/ui/axis-navbar";
+import { PageTransition } from "@/components/ui/page-transition";
 
 export default function RootLayout({
   children,
@@ -45,9 +46,11 @@ export default function RootLayout({
         <AxisNavBar />
 
         {/* Layer 1: Content (Relative, Interactive) */}
-        {/* We wrap children in a generic relative container to ensure they sit above the background */}
+        {/* We wrap children in a PageTransition to ensure smooth route changes */}
         <div className="relative z-10 w-full min-h-screen flex flex-col">
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
         </div>
       </body>
     </html>
