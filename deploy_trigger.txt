@@ -1,9 +1,10 @@
-DEPLOYMENT FORCE V15
-TIMESTAMP: 2026-01-09T21:00:00-07:00
-ACTION: NAVIGATION CTA REFACTOR & HERO CLEANUP
-STATUS: NAVBAR HIGHLIGHT INTEGRATED
-- Removed "Enter Axis" and "Create Account" buttons from hero section
-- Added specialized "Get Started" high-contrast button to Navbar
-- Optimized Tubelight Navbar to handle "bubble box" highlight items
-- Fixed missing Lucide icon imports
-The landing page is now cleaner, and the persistent CTA is always accessible in the Navbar.
+DEPLOYMENT FORCE V16
+TIMESTAMP: 2026-01-09T21:15:00-07:00
+ACTION: AXIS SIMULATOR INTEGRATION & NARRATIVE OVERHAUL
+STATUS: TRUST-LAYER SYNC COMPLETED
+- Embedded deterministic "Double-Spend Prevention" simulator on landing page
+- Restructured landing page flow: Hero -> About -> Simulator -> CTA
+- Added "Run Live Demo" CTA with smooth-scroll anchoring
+- Implemented high-impact conversion block with role-based trust signals
+- Final syntax verification and cleanup of redundant bento components
+The Axis platform now tells a complete, verifiable story of system correctness.
