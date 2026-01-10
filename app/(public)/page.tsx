@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Scene } from '@/components/ui/hero-section';
 import { BentoGrid, BentoItem } from '@/components/ui/bento-grid';
-import Dock from '@/components/ui/dock';
 import {
     ShieldCheck, Lock, Layers, History, TrendingUp, Activity, Database,
     AlertOctagon, Home, LogIn, UserPlus, FileText, Globe, Cpu, Network,
@@ -107,14 +106,6 @@ const moduleFeatures: BentoItem[] = [
 export default function LandingPage() {
     const router = useRouter();
 
-    const dockItems = [
-        { icon: Home, label: "Home", onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
-        { icon: Info, label: "About", onClick: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
-        { icon: LogIn, label: "Login", onClick: () => router.push('/login') },
-        { icon: UserPlus, label: "Signup", onClick: () => router.push('/signup') },
-        { icon: FileText, label: "Docs", onClick: () => router.push('/docs') },
-    ];
-
     return (
         <div className="relative min-h-screen w-full bg-black text-white overflow-hidden font-sans selection:bg-white/20 pb-32">
 
@@ -198,13 +189,6 @@ export default function LandingPage() {
 
             {/* Continuation of Axis Content */}
             <BottomSections />
-
-            {/* Floating Dock Navigation */}
-            <div className="fixed bottom-8 left-0 right-0 z-50 pointer-events-none flex justify-center">
-                <div className="pointer-events-auto">
-                    <Dock items={dockItems} />
-                </div>
-            </div>
 
         </div>
     );
