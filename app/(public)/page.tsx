@@ -10,10 +10,10 @@ import Dock from '@/components/ui/dock';
 import {
     ShieldCheck, Lock, Layers, History, TrendingUp, Activity, Database,
     AlertOctagon, Home, LogIn, UserPlus, FileText, Globe, Cpu, Network,
-    Bell, Key, Fingerprint, BarChart3, Workflow, Briefcase, TrendingDown
+    Bell, Key, Fingerprint, BarChart3, Workflow, Briefcase, TrendingDown, Info
 } from 'lucide-react';
+import { AboutSection } from '@/components/ui/about-section';
 import { cn } from '@/lib/utils';
-import { useRef } from 'react';
 
 // 1. Core Logic (The Brain)
 const coreFeatures: BentoItem[] = [
@@ -109,9 +109,10 @@ export default function LandingPage() {
 
     const dockItems = [
         { icon: Home, label: "Home", onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+        { icon: Info, label: "About", onClick: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
         { icon: LogIn, label: "Login", onClick: () => router.push('/login') },
         { icon: UserPlus, label: "Signup", onClick: () => router.push('/signup') },
-        { icon: FileText, label: "Docs", onClick: () => router.push('#') }, // Placeholder
+        { icon: FileText, label: "Docs", onClick: () => router.push('/docs') },
     ];
 
     return (
@@ -136,7 +137,7 @@ export default function LandingPage() {
                             <h1 className="text-4xl md:text-7xl font-semibold tracking-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
                                 Decision Authority Layer <br /> for Businesses
                             </h1>
-                            <p className="text-lg md:text-xl text-neutral-300 max-w-2xl leading-relaxed">
+                            <p className="text-lg md:text-xl text-white max-w-2xl leading-relaxed font-medium">
                                 Axis sits between intent and action to enforce financial survival. <br className="hidden md:block" />
                                 Designed for serious operators who value reality over forecasts.
                             </p>
@@ -159,8 +160,8 @@ export default function LandingPage() {
                     {/* Section 1: Core Logic (Bento) */}
                     <div className="space-y-4">
                         <div className="text-center space-y-2">
-                            <h2 className="text-2xl font-semibold text-white">The Core Engine</h2>
-                            <p className="text-neutral-400">Survival invariants enforced by code.</p>
+                            <h2 className="text-2xl font-bold text-white">The Core Engine</h2>
+                            <p className="text-white font-medium">Survival invariants enforced by code.</p>
                         </div>
                         <div className="w-full flex justify-center">
                             <BentoGrid items={coreFeatures} />
@@ -188,6 +189,9 @@ export default function LandingPage() {
                             <BentoGrid items={moduleFeatures} />
                         </div>
                     </div>
+
+                    {/* About Section */}
+                    <AboutSection />
 
                 </div>
             </div>

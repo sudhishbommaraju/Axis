@@ -1,0 +1,20 @@
+{
+  "invariants": {},
+  "attacks": [
+    {
+      "type": "DOUBLE_SPEND",
+      "outcome": "FAILED_TO_PREVENT",
+      "details": "Race condition exploited."
+    },
+    {
+      "type": "IMMUTABILITY",
+      "outcome": "FAILED",
+      "details": "Past records were altered in-memory."
+    },
+    {
+      "type": "NEGATIVE_BALANCE",
+      "outcome": "BLOCKED",
+      "details": "INVARIANT_VIOLATION: Negative Balance"
+    }
+  ]
+}

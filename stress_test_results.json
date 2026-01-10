@@ -1,0 +1,7 @@
+{
+  "throughput": 8101406,
+  "p99BatchMs": 68.7333000000001,
+  "avgOpLatencyMicro": 0.12343535999999994,
+  "totalItems": 5000000,
+  "peakMemoryDeltaMB": 205.9159164428711
+}

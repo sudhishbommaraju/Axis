@@ -1,1 +1,7 @@
-Deployment check 1
+Deployment triggered for visibility improvements and navigation integrity.
+Timestamp: 2026-01-09T18:37:37-07:00
+Changes:
+- Created /docs and /security placeholder pages
+- Changed all descriptive text to white for maximum visibility
+- Functional links for all Navbar and Dock items
+- Fixed lint and build compliance
