@@ -1,9 +1,10 @@
-DEPLOYMENT FORCE V11
-TIMESTAMP: 2026-01-09T20:45:00-07:00
-ACTION: INTEGRATE NEW MULTI-STEP AXIS SIGN-UP PAGE
-STATUS: CINEMATIC BUILD TRIGGERED
-- Installed canvas-confetti
-- Created high-end multi-step AuthComponent in /signup
-- Professional Axis branding with emerald gradients and mono typography
-- Hardened route to prevent blank screens
-Vercel should now serve the premium signup experience.
+DEPLOYMENT FORCE V12
+TIMESTAMP: 2026-01-09T20:50:00-07:00
+ACTION: INTEGRATE ACCOUNT TYPE SELECTION (OWNER/CUSTOMER/APPLICANT)
+STATUS: IDENTITY PROTOCOL UPDATED
+- Added initial 'Select Identity' step to Sign-Up
+- Integrated Owner, Customer, and Applicant options
+- Specialized Axis-themed selection cards with icons
+- Hardened back-navigation logic
+- Forced dynamic rendering on /signup
+Vercel should now serve the complete identity selection flow.

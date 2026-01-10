@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle, us
 // Importing class-variance-authority for the built-in button component
 import { cva, type VariantProps } from "class-variance-authority";
 // Importing icons from lucide-react
-import { ArrowRight, Mail, Gem, Lock, Eye, EyeOff, ArrowLeft, X, AlertCircle, PartyPopper, Loader, Diamond } from "lucide-react";
+import { ArrowRight, Mail, Gem, Lock, Eye, EyeOff, ArrowLeft, X, AlertCircle, PartyPopper, Loader, Diamond, User, ShieldCheck, FilePlus } from "lucide-react";
 // Importing animation components from framer-motion
 import { AnimatePresence, motion, useInView, Variants, Transition } from "framer-motion";
 
@@ -171,7 +171,8 @@ export const AuthComponent = ({ logo = <DefaultLogo />, brandName = "Axis" }: Au
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [authStep, setAuthStep] = useState("email");
+    const [authStep, setAuthStep] = useState("accountType");
+    const [accountType, setAccountType] = useState<"owner" | "customer" | "applicant" | null>(null);
     const [modalStatus, setModalStatus] = useState<'closed' | 'loading' | 'error' | 'success'>('closed');
     const [modalErrorMessage, setModalErrorMessage] = useState('');
     const confettiRef = useRef<ConfettiRef>(null);
@@ -212,7 +213,9 @@ export const AuthComponent = ({ logo = <DefaultLogo />, brandName = "Axis" }: Au
     };
 
     const handleProgressStep = () => {
-        if (authStep === 'email') {
+        if (authStep === 'accountType') {
+            if (accountType) setAuthStep("email");
+        } else if (authStep === 'email') {
             if (isEmailValid) setAuthStep("password");
         } else if (authStep === 'password') {
             if (isPasswordValid) setAuthStep("confirmPassword");
@@ -232,6 +235,10 @@ export const AuthComponent = ({ logo = <DefaultLogo />, brandName = "Axis" }: Au
             setConfirmPassword('');
         }
         else if (authStep === 'password') setAuthStep('email');
+        else if (authStep === 'email') {
+            setAuthStep('accountType');
+            setAccountType(null);
+        }
     };
 
     const closeModal = () => {
@@ -303,8 +310,38 @@ export const AuthComponent = ({ logo = <DefaultLogo />, brandName = "Axis" }: Au
 
             <div className={cn("flex w-full flex-1 h-full items-center justify-center bg-black", "relative overflow-hidden")}>
                 <div className="absolute inset-0 z-0"><GradientBackground /></div>
-                <fieldset disabled={modalStatus !== 'closed'} className="relative z-10 flex flex-col items-center gap-12 w-[320px] mx-auto p-4">
+                <fieldset disabled={modalStatus !== 'closed'} className="relative z-10 flex flex-col items-center gap-12 w-[340px] mx-auto p-4">
                     <AnimatePresence mode="wait">
+                        {authStep === "accountType" && <motion.div key="type-selection" initial={{ y: 20, opacity: 0, filter: 'blur(10px)' }} animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }} exit={{ y: -20, opacity: 0, filter: 'blur(10px)' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} className="w-full flex flex-col items-center gap-6">
+                            <BlurFade delay={0.1} className="w-full"><div className="text-center"><p className="font-inter font-light text-4xl tracking-tighter text-white whitespace-nowrap uppercase">Select Identity</p></div></BlurFade>
+                            <BlurFade delay={0.2} className="w-full">
+                                <div className="grid gap-3 w-full">
+                                    {[
+                                        { id: 'owner', label: 'Owner', icon: ShieldCheck, desc: 'Full authority & configuration' },
+                                        { id: 'customer', label: 'Customer', icon: User, desc: 'Execution & deployment' },
+                                        { id: 'applicant', label: 'Applicant', icon: FilePlus, desc: 'Requested integration' }
+                                    ].map((type, i) => (
+                                        <button
+                                            key={type.id}
+                                            onClick={() => { setAccountType(type.id as any); setAuthStep('email'); }}
+                                            className={cn(
+                                                "group flex items-center gap-4 w-full p-4 rounded-2xl border transition-all duration-300",
+                                                "bg-white/5 border-white/5 hover:border-emerald-500/50 hover:bg-emerald-500/5"
+                                            )}
+                                        >
+                                            <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-white/5 group-hover:bg-emerald-500/20 transition-colors">
+                                                <type.icon className="h-5 w-5 text-neutral-400 group-hover:text-emerald-500" />
+                                            </div>
+                                            <div className="text-left">
+                                                <p className="text-xs font-bold uppercase tracking-widest text-white">{type.label}</p>
+                                                <p className="text-[10px] font-mono text-neutral-500 uppercase mt-0.5">{type.desc}</p>
+                                            </div>
+                                            <ArrowRight className="h-4 w-4 ml-auto text-neutral-700 group-hover:text-emerald-500 transition-colors" />
+                                        </button>
+                                    ))}
+                                </div>
+                            </BlurFade>
+                        </motion.div>}
                         {authStep === "email" && <motion.div key="email-content" initial={{ y: 20, opacity: 0, filter: 'blur(10px)' }} animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }} exit={{ y: -20, opacity: 0, filter: 'blur(10px)' }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} className="w-full flex flex-col items-center gap-6">
                             <BlurFade delay={0.1} className="w-full"><div className="text-center"><p className="font-inter font-light text-5xl tracking-tighter text-white whitespace-nowrap">Join the <span className="text-emerald-500 font-medium">Axis</span></p></div></BlurFade>
                             <BlurFade delay={0.2}><p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Assertion Protocol 1.0.8</p></BlurFade>
