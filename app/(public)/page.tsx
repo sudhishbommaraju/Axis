@@ -45,15 +45,6 @@ export default function LandingPage() {
                                 >
                                     Run Live Demo
                                 </Button>
-                                <Button
-                                    asChild
-                                    variant="outline"
-                                    className="text-sm px-10 py-7 rounded-xl bg-transparent text-white border border-white/20 shadow-none hover:bg-white/10 transition-all duration-300 font-semibold text-lg"
-                                >
-                                    <Link href="/signup">
-                                        Create Account
-                                    </Link>
-                                </Button>
                             </div>
                         </div>
                     </section>
