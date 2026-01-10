@@ -1,10 +1,9 @@
-DEPLOYMENT FORCE FINAL SYNC
-TIMESTAMP: 2026-01-09T20:57:00-07:00
-ACTION: MASTER REPRODUCTION FIX & FINAL REDEPLOY
-STATUS: SYSTEM INTEGRITY RESTORED
-- Hardened RootLayout with Suspense to prevent blank screen waterfalls
-- Optimized button linkage on landing page (asChild) 
-- Verified Identity Selection flow (Owner/Customer/Applicant)
-- Final build stabilization for framer-motion margin types
-- Ensured dark mode is forced on HTML/Body
-All "Axis Authority" features are now fully integrated and verified for cinematic deployment.
+DEPLOYMENT FORCE V15
+TIMESTAMP: 2026-01-09T21:00:00-07:00
+ACTION: NAVIGATION CTA REFACTOR & HERO CLEANUP
+STATUS: NAVBAR HIGHLIGHT INTEGRATED
+- Removed "Enter Axis" and "Create Account" buttons from hero section
+- Added specialized "Get Started" high-contrast button to Navbar
+- Optimized Tubelight Navbar to handle "bubble box" highlight items
+- Fixed missing Lucide icon imports
+The landing page is now cleaner, and the persistent CTA is always accessible in the Navbar.

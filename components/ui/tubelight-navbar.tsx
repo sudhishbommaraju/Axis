@@ -10,6 +10,7 @@ interface NavItem {
     name: string
     url: string
     icon: LucideIcon
+    special?: boolean
 }
 
 interface NavBarProps {
@@ -49,16 +50,18 @@ export function NavBar({ items, className }: NavBarProps) {
                             href={item.url}
                             onClick={() => setActiveTab(item.name)}
                             className={cn(
-                                "relative cursor-pointer text-sm font-semibold px-4 sm:px-6 py-2 rounded-full transition-colors",
-                                "text-white/70 hover:text-white",
-                                isActive && "text-white",
+                                "relative cursor-pointer text-sm font-semibold px-4 sm:px-6 py-2 rounded-full transition-all duration-300",
+                                item.special
+                                    ? "bg-emerald-500 text-black hover:bg-emerald-400 ml-2 shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                                    : "text-white/70 hover:text-white",
+                                isActive && !item.special && "text-white",
                             )}
                         >
-                            <span className="hidden md:inline">{item.name}</span>
-                            <span className="md:hidden">
+                            <span className={cn("hidden md:inline", item.special && "inline")}>{item.name}</span>
+                            <span className={cn("md:hidden", item.special && "hidden")}>
                                 <Icon size={18} strokeWidth={2.5} />
                             </span>
-                            {isActive && (
+                            {isActive && !item.special && (
                                 <motion.div
                                     layoutId="lamp"
                                     className="absolute inset-0 w-full bg-white/5 rounded-full -z-10"
