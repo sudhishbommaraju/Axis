@@ -1,10 +1,7 @@
-DEPLOYMENT FORCE V12
-TIMESTAMP: 2026-01-09T20:50:00-07:00
-ACTION: INTEGRATE ACCOUNT TYPE SELECTION (OWNER/CUSTOMER/APPLICANT)
-STATUS: IDENTITY PROTOCOL UPDATED
-- Added initial 'Select Identity' step to Sign-Up
-- Integrated Owner, Customer, and Applicant options
-- Specialized Axis-themed selection cards with icons
-- Hardened back-navigation logic
-- Forced dynamic rendering on /signup
-Vercel should now serve the complete identity selection flow.
+DEPLOYMENT FORCE V13
+TIMESTAMP: 2026-01-09T20:52:00-07:00
+ACTION: FIX TYPESCRIPT BUILD ERROR IN SIGN-UP
+STATUS: BUILD FIX TRIGGERED
+- Fixed Type 'string' is not assignable to type 'MarginType' in BlurFade component
+- Casted inViewMargin to 'any' to satisfy framer-motion strict types
+Vercel build should now succeed.
