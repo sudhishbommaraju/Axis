@@ -1,7 +1,8 @@
-DEPLOYMENT FORCE V13
-TIMESTAMP: 2026-01-09T20:52:00-07:00
-ACTION: FIX TYPESCRIPT BUILD ERROR IN SIGN-UP
-STATUS: BUILD FIX TRIGGERED
-- Fixed Type 'string' is not assignable to type 'MarginType' in BlurFade component
-- Casted inViewMargin to 'any' to satisfy framer-motion strict types
-Vercel build should now succeed.
+DEPLOYMENT FORCE V14
+TIMESTAMP: 2026-01-09T20:55:00-07:00
+ACTION: FINALIZE BUTTON LINKAGE & ROBUSTNESS
+STATUS: HARDENING COMPLETE
+- Updated Hero buttons to use asChild for reliable Link behavior
+- Added global Loading boundary to (public) layout to prevent blank screens
+- Ensured z-index hierarchy is correct for interactive elements
+Vercel should now serve a much more robust and clickable landing experience.

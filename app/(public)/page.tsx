@@ -134,16 +134,16 @@ export default function LandingPage() {
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 items-center pt-4">
-                                <Link href="/login">
-                                    <Button className="text-sm px-8 py-6 rounded-xl bg-white text-black border border-white/10 shadow-lg shadow-white/5 hover:bg-white/90 hover:scale-105 transition-all duration-300 font-semibold text-base">
+                                <Button asChild className="text-sm px-8 py-6 rounded-xl bg-white text-black border border-white/10 shadow-lg shadow-white/5 hover:bg-white/90 hover:scale-105 transition-all duration-300 font-semibold text-base">
+                                    <Link href="/login">
                                         Enter Axis
-                                    </Button>
-                                </Link>
-                                <Link href="/signup">
-                                    <Button className="text-sm px-8 py-6 rounded-xl bg-transparent text-white border border-white/20 shadow-none hover:bg-white/10 transition-all duration-300 font-medium text-base">
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="ghost" className="text-sm px-8 py-6 rounded-xl bg-transparent text-white border border-white/20 shadow-none hover:bg-white/10 transition-all duration-300 font-medium text-base">
+                                    <Link href="/signup">
                                         Create Account
-                                    </Button>
-                                </Link>
+                                    </Link>
+                                </Button>
                             </div>
                         </div>
                     </div>
