@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 
 import { AxisNavBar } from "@/components/ui/axis-navbar";
 import { PageTransition } from "@/components/ui/page-transition";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -48,9 +49,11 @@ export default function RootLayout({
         {/* Layer 1: Content (Relative, Interactive) */}
         {/* We wrap children in a PageTransition to ensure smooth route changes */}
         <div className="relative z-10 w-full min-h-screen flex flex-col">
-          <PageTransition>
-            {children}
-          </PageTransition>
+          <Suspense fallback={<div className="fixed inset-0 bg-black z-[100]" />}>
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </Suspense>
         </div>
       </body>
     </html>

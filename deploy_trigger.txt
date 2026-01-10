@@ -1,8 +1,10 @@
-DEPLOYMENT FORCE V14
-TIMESTAMP: 2026-01-09T20:55:00-07:00
-ACTION: FINALIZE BUTTON LINKAGE & ROBUSTNESS
-STATUS: HARDENING COMPLETE
-- Updated Hero buttons to use asChild for reliable Link behavior
-- Added global Loading boundary to (public) layout to prevent blank screens
-- Ensured z-index hierarchy is correct for interactive elements
-Vercel should now serve a much more robust and clickable landing experience.
+DEPLOYMENT FORCE FINAL SYNC
+TIMESTAMP: 2026-01-09T20:57:00-07:00
+ACTION: MASTER REPRODUCTION FIX & FINAL REDEPLOY
+STATUS: SYSTEM INTEGRITY RESTORED
+- Hardened RootLayout with Suspense to prevent blank screen waterfalls
+- Optimized button linkage on landing page (asChild) 
+- Verified Identity Selection flow (Owner/Customer/Applicant)
+- Final build stabilization for framer-motion margin types
+- Ensured dark mode is forced on HTML/Body
+All "Axis Authority" features are now fully integrated and verified for cinematic deployment.
