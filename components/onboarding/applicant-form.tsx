@@ -10,10 +10,11 @@ import { FileText, Briefcase } from "lucide-react";
 
 export function ApplicantOnboardingForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formData, setFormData] = useState({ fullName: '', currentRole: '' });
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
-        await completeOnboarding('applicant');
+        await completeOnboarding('applicant', formData);
     };
 
     return (
@@ -29,11 +30,21 @@ export function ApplicantOnboardingForm() {
             <div className="space-y-4">
                 <div className="space-y-1">
                     <Label>Full Name</Label>
-                    <Input placeholder="John Smith" className="bg-white/5 border-white/10 text-white" />
+                    <Input
+                        placeholder="John Smith"
+                        className="bg-white/5 border-white/10 text-white"
+                        value={formData.fullName}
+                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    />
                 </div>
                 <div className="space-y-1">
                     <Label>Current Role</Label>
-                    <Input placeholder="e.g. Software Engineer" className="bg-white/5 border-white/10 text-white" />
+                    <Input
+                        placeholder="e.g. Software Engineer"
+                        className="bg-white/5 border-white/10 text-white"
+                        value={formData.currentRole}
+                        onChange={(e) => setFormData({ ...formData, currentRole: e.target.value })}
+                    />
                 </div>
 
                 <div className="pt-4 border-t border-white/10">

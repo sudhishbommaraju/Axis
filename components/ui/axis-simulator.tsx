@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Play, RotateCcw, ShieldCheck, AlertCircle, Activity, ArrowRight, CheckCircle2, XCircle, Sparkles } from "lucide-react"
+import { Play, RotateCcw, ShieldCheck, AlertCircle, Activity, ArrowRight, CheckCircle2, Sparkles, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "./button"
 import { AILoader } from "./ai-loader"
@@ -114,20 +114,40 @@ export function AxisSimulator() {
                         </p>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 relative z-50">
                         <Button
-                            onClick={runSimulation}
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation(); // Prevent bubbling issues
+                                console.log("Run Simulation Clicked");
+                                runSimulation();
+                            }}
                             disabled={isRunning}
                             size="sm"
-                            className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-widest text-[10px] px-4"
+                            className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-widest text-[10px] px-4 cursor-pointer relative z-50 transition-all hover:scale-105 active:scale-95"
                         >
-                            {isRunning ? "Simulating..." : <><Play className="w-3 h-3 mr-2" /> Run Simulation</>}
+                            {isRunning ? (
+                                <span className="flex items-center gap-2">
+                                    <Loader2 className="w-3 h-3 animate-spin" />
+                                    Simulating...
+                                </span>
+                            ) : (
+                                <span className="flex items-center gap-2">
+                                    <Play className="w-3 h-3" />
+                                    Run Simulation
+                                </span>
+                            )}
                         </Button>
                         <Button
-                            onClick={reset}
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                reset();
+                            }}
+                            disabled={isRunning}
                             variant="outline"
                             size="icon"
-                            className="rounded-lg border-white/10 hover:bg-white/5"
+                            className="rounded-lg border-white/10 hover:bg-white/5 cursor-pointer relative z-50 transition-all active:scale-95"
                         >
                             <RotateCcw className="w-4 h-4 text-neutral-400" />
                         </Button>

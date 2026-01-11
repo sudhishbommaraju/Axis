@@ -10,10 +10,11 @@ import { User, Sparkles } from "lucide-react";
 
 export function CustomerOnboardingForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formData, setFormData] = useState({ fullName: '', bio: '' });
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
-        await completeOnboarding('customer');
+        await completeOnboarding('customer', formData);
     };
 
     return (
@@ -29,13 +30,20 @@ export function CustomerOnboardingForm() {
             <div className="space-y-4">
                 <div className="space-y-1">
                     <Label>Full Name</Label>
-                    <Input placeholder="Jane Doe" className="bg-white/5 border-white/10 text-white" />
+                    <Input
+                        placeholder="Jane Doe"
+                        className="bg-white/5 border-white/10 text-white"
+                        value={formData.fullName}
+                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    />
                 </div>
                 <div className="space-y-1">
                     <Label>Bio (Optional)</Label>
                     <textarea
                         className="flex min-h-[80px] w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
                         placeholder="Tell us a bit about yourself..."
+                        value={formData.bio}
+                        onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                     />
                 </div>
             </div>

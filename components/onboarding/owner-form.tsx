@@ -7,14 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+
 import { ArrowRight, ArrowLeft, CheckCircle2, Building2, Wallet, Activity, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Types
 type Step = 'basics' | 'ops' | 'financials' | 'constraints';
 
-const STEPS: { id: Step; label: string; icon: any }[] = [
+const STEPS: { id: Step; label: string; icon: React.ElementType }[] = [
     { id: 'basics', label: 'Identity', icon: Building2 },
     { id: 'ops', label: 'Operations', icon: Activity },
     { id: 'financials', label: 'Capital', icon: Wallet },
@@ -71,9 +71,8 @@ export function OwnerOnboardingForm() {
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
-        // Here we would sync the collected data to the user's profile/DB
-        // For now, we simulate the save and complete the session.
-        await completeOnboarding('owner');
+        // Sync collected data to DB
+        await completeOnboarding('owner', formData);
     };
 
     // Render Steps
