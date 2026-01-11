@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 type Role = "owner" | "customer" | "applicant";
 
-const ROLES: { id: Role; title: string; description: string; icon: React.ElementType; color: string; bg: string; border: string; activeBorder: string }[] = [
+const ROLES: { id: Role; title: string; description: string; icon: any; color: string; bg: string; border: string; activeBorder: string }[] = [
     {
         id: "owner",
         title: "Business Owner",
