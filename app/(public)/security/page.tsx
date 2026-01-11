@@ -4,10 +4,11 @@ import React from 'react';
 import { ShieldAlert, Fingerprint, Lock, ShieldCheck, Search, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { SiteFooter } from '@/components/site-footer';
 
 export default function SecurityPage() {
     return (
-        <div className="relative min-h-screen w-full bg-black text-white pt-32 pb-24 px-6">
+        <div className="relative min-h-screen w-full bg-black text-white pt-32 pb-0 px-6">
             <div className="max-w-4xl mx-auto space-y-12">
                 <div className="space-y-4">
                     <div className="flex items-center gap-3 text-emerald-500 mb-2">
@@ -53,7 +54,7 @@ export default function SecurityPage() {
                     ))}
                 </div>
 
-                <div className="p-8 rounded-2xl bg-red-500/5 border border-red-500/10 flex items-center gap-6">
+                <div className="p-8 rounded-2xl bg-red-500/5 border border-red-500/10 flex items-center gap-6 mb-24">
                     <ShieldAlert className="w-12 h-12 text-red-500 shrink-0" />
                     <div className="space-y-1">
                         <h3 className="text-lg font-bold text-white">Vulnerability Disclosure</h3>
@@ -63,6 +64,7 @@ export default function SecurityPage() {
                     </div>
                 </div>
             </div>
+            <SiteFooter />
         </div>
     );
 }

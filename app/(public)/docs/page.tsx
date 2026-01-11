@@ -4,10 +4,11 @@ import React from 'react';
 import { FileText, ChevronRight, BookOpen, Terminal, Code } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { SiteFooter } from '@/components/site-footer';
 
 export default function DocsPage() {
     return (
-        <div className="relative min-h-screen w-full bg-black text-white pt-32 pb-24 px-6">
+        <div className="relative min-h-screen w-full bg-black text-white pt-32 pb-0 px-6">
             <div className="max-w-4xl mx-auto space-y-12">
                 <div className="space-y-4">
                     <div className="flex items-center gap-3 text-emerald-500 mb-2">
@@ -51,7 +52,7 @@ export default function DocsPage() {
                     ))}
                 </div>
 
-                <div className="p-12 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 text-center space-y-6">
+                <div className="p-12 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 text-center space-y-6 mb-24">
                     <h2 className="text-2xl font-bold text-white">Need Technical Support?</h2>
                     <p className="text-neutral-200 max-w-xl mx-auto">
                         Our engineering team is available for deep architectural reviews and custom invariant modeling.
@@ -61,6 +62,7 @@ export default function DocsPage() {
                     </Link>
                 </div>
             </div>
+            <SiteFooter />
         </div>
     );
 }
