@@ -11,7 +11,17 @@ async function OnboardingContent() {
     const role = await getRole();
 
     if (!role) {
-        redirect('/');
+        // During build time, role is undefined. 
+        // We shouldn't redirect here as it can break static analysis.
+        // Middleware handles the actual protection.
+        return (
+            <div className="flex h-screen items-center justify-center text-white">
+                <div className="text-center">
+                    <p className="mb-4">Session expired or invalid.</p>
+                    <a href="/login" className="text-emerald-500 hover:underline">Return to Login</a>
+                </div>
+            </div>
+        );
     }
 
     if (role === 'owner') {
