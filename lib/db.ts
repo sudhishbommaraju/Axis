@@ -45,9 +45,10 @@ async function writeDb(data: DbSchema): Promise<void> {
     try {
         await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
         await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
-    } catch (error) {
+    } catch (error: any) {
         console.error("DB Write Error:", error);
-        throw new Error("Failed to save data. Please check server logs.");
+        // Expose system error for debugging (OneDrive lock, permissions, etc.)
+        throw new Error(`DB Save Failed: ${error.code || error.message} at ${DB_PATH}`);
     }
 }
 
