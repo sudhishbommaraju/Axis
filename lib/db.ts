@@ -1,7 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
+const DB_PATH = process.env.NODE_ENV === 'production'
+    ? path.join('/tmp', 'axis_db.json')
+    : path.join(process.cwd(), 'data', 'db.json');
 
 export type UserRole = 'owner' | 'customer' | 'applicant';
 export type OnboardingStatus = 'incomplete' | 'complete';
