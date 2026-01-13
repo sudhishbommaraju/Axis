@@ -3,49 +3,63 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { db, UserRole } from '@/lib/db'
-// Native UUID for lighter dependency
-const generateId = () => crypto.randomUUID();
+import { randomUUID } from 'crypto';
+
+// Use explicit crypto import for better compatibility
+const generateId = () => randomUUID();
 
 export async function signup(formData: FormData) {
-    const name = formData.get('name') as string;
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const role = formData.get('role') as UserRole;
+    try {
+        const name = formData.get('name') as string;
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+        const role = formData.get('role') as UserRole;
 
-    if (!email || !password || !role) {
-        throw new Error("Missing required fields");
+        console.log(`[SIGNUP] Attempting signup for ${email} as ${role}`);
+
+        if (!email || !password || !role) {
+            throw new Error("Missing required fields");
+        }
+
+        const existingUser = await db.users.findByEmail(email);
+        if (existingUser) {
+            console.log(`[SIGNUP] User already exists: ${email}`);
+            throw new Error("User already exists");
+        }
+
+        // Create User
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // MOCK EMAIL SENDING
+        console.log(`\n\n[EMAIL MOCK] Verification code for ${email}: ${verificationCode}\n\n`);
+
+        const newUser = await db.users.create({
+            id: generateId(),
+            email,
+            passwordHash: password, // In real app, hash this
+            name,
+            role,
+            onboardingStatus: 'incomplete',
+            emailVerified: false,
+            verificationCode,
+            createdAt: new Date().toISOString()
+        });
+
+        console.log(`[SIGNUP] User created successfully: ${newUser.id}`);
+
+        // Create Session (but don't rely on it fully until verified)
+        const cookieStore = await cookies();
+        // We set role so they can verify, but onboarding check should block them if not verified
+        cookieStore.set('session_role', role, { httpOnly: true, path: '/' });
+
+    } catch (error) {
+        // Log the actual error for debugging
+        console.error("SIGNUP ERROR:", error);
+        throw error; // Rethrow to let UI handle it, but now we have logs
     }
 
-    const existingUser = await db.users.findByEmail(email);
-    if (existingUser) {
-        throw new Error("User already exists");
-    }
-
-    // Create User
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // MOCK EMAIL SENDING
-    console.log(`\n\n[EMAIL MOCK] Verification code for ${email}: ${verificationCode}\n\n`);
-
-    const newUser = await db.users.create({
-        id: generateId(),
-        email,
-        passwordHash: password, // In real app, hash this
-        name,
-        role,
-        onboardingStatus: 'incomplete',
-        emailVerified: false,
-        verificationCode,
-        createdAt: new Date().toISOString()
-    });
-
-    // Create Session (but don't rely on it fully until verified)
-    const cookieStore = await cookies();
-    // We set role so they can verify, but onboarding check should block them if not verified
-    cookieStore.set('session_role', role, { httpOnly: true, path: '/' });
-
-    // Redirect to verification
-    redirect(`/verify-email?email=${encodeURIComponent(email)}`);
+    // Redirect OUTSIDE the try/catch to avoid NEXT_REDIRECT errors being caught
+    redirect(`/verify-email?email=${encodeURIComponent(formData.get('email') as string)}`);
 }
 
 export async function verifyEmail(email: string, code: string) {

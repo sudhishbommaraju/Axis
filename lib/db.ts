@@ -33,15 +33,22 @@ export interface DbSchema {
 async function readDb(): Promise<DbSchema> {
     try {
         const data = await fs.readFile(DB_PATH, 'utf-8');
+        if (!data.trim()) return { users: [], onboarding: [] };
         return JSON.parse(data);
     } catch (error) {
-        // If file doesn't exist or error, return empty default
+        // If file doesn't exist, return empty default
         return { users: [], onboarding: [] };
     }
 }
 
 async function writeDb(data: DbSchema): Promise<void> {
-    await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+    try {
+        await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
+        await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (error) {
+        console.error("DB Write Error:", error);
+        throw new Error("Failed to save data. Please check server logs.");
+    }
 }
 
 export const db = {
