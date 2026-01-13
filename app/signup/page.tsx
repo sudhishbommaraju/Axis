@@ -48,14 +48,13 @@ export default function RoleSelectionPage() {
     const [isNavigating, setIsNavigating] = useState(false);
 
     const handleSelect = (roleId: Role) => {
-        if (isNavigating) return;
         setSelectedRole(roleId);
+    };
 
-        // Add a small delay for visual feedback before navigation
+    const handleContinue = () => {
+        if (!selectedRole) return;
         setIsNavigating(true);
-        setTimeout(() => {
-            router.push(`/signup/create-account?role=${roleId}`);
-        }, 400);
+        router.push(`/signup/create-account?role=${selectedRole}`);
     };
 
     return (
@@ -80,11 +79,11 @@ export default function RoleSelectionPage() {
                             <button
                                 key={role.id}
                                 onClick={() => handleSelect(role.id)}
-                                disabled={isNavigating}
+                                type="button"
                                 className={cn(
-                                    "group relative h-full text-left transition-all duration-300 outline-none focus:ring-2 focus:ring-emerald-500/50 rounded-xl",
-                                    "hover:-translate-y-2",
-                                    isOtherSelected && "opacity-50 scale-95",
+                                    "group relative h-full text-left transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 rounded-xl",
+                                    "hover:-translate-y-1",
+                                    isOtherSelected && "opacity-50 scale-95 hover:opacity-100 hover:scale-100",
                                     isSelected && "scale-105 ring-2 ring-emerald-500 shadow-2xl shadow-emerald-900/20"
                                 )}
                             >
@@ -113,13 +112,6 @@ export default function RoleSelectionPage() {
                                         <CardDescription className="text-neutral-400 text-base">
                                             {role.description}
                                         </CardDescription>
-                                        <div className={cn(
-                                            "flex items-center text-sm font-medium transition-all duration-300",
-                                            isSelected ? "text-emerald-400 opacity-100 translate-x-0" : "text-white opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
-                                        )}>
-                                            {isNavigating && isSelected ? "Continuing..." : "Get Started"}
-                                            {isNavigating && isSelected ? <Loader2 className="w-4 h-4 ml-2 animate-spin" /> : <ArrowRight className="w-4 h-4 ml-2" />}
-                                        </div>
                                     </CardContent>
                                 </Card>
                             </button>
@@ -127,14 +119,36 @@ export default function RoleSelectionPage() {
                     })}
                 </div>
 
-                <div className="text-sm text-neutral-500">
-                    Already have an account?
-                    <button
-                        onClick={() => router.push('/login')}
-                        className="ml-1 text-white underline underline-offset-4 hover:text-emerald-400 transition-colors"
+                <div className="flex flex-col items-center gap-6 pt-8">
+                    <Button
+                        onClick={handleContinue}
+                        disabled={!selectedRole || isNavigating}
+                        className={cn(
+                            "px-12 py-6 text-lg font-bold rounded-2xl transition-all duration-300",
+                            selectedRole
+                                ? "bg-emerald-500 text-black hover:bg-emerald-400 hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                                : "bg-white/5 text-neutral-500 cursor-not-allowed hover:bg-white/5"
+                        )}
                     >
-                        Log in
-                    </button>
+                        {isNavigating ? (
+                            <>Continuing <Loader2 className="w-5 h-5 ml-2 animate-spin" /></>
+                        ) : (
+                            <>
+                                Continue as {selectedRole ? ROLES.find(r => r.id === selectedRole)?.title : "..."}
+                                <ArrowRight className="w-5 h-5 ml-2" />
+                            </>
+                        )}
+                    </Button>
+
+                    <div className="text-sm text-neutral-500">
+                        Already have an account?
+                        <button
+                            onClick={() => router.push('/login')}
+                            className="ml-1 text-white underline underline-offset-4 hover:text-emerald-400 transition-colors"
+                        >
+                            Log in
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
