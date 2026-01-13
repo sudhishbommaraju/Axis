@@ -1,5 +1,8 @@
 import { redirect } from "next/navigation";
 import { getRole } from "@/app/actions/auth";
+
+export const dynamic = 'force-dynamic';
+
 import { OwnerOnboardingForm } from "@/components/onboarding/owner-form";
 import { CustomerOnboardingForm } from "@/components/onboarding/customer-form";
 import { ApplicantOnboardingForm } from "@/components/onboarding/applicant-form";
