@@ -141,9 +141,14 @@ export async function logout() {
 }
 
 export async function getRole(): Promise<UserRole | undefined> {
-    const cookieStore = await cookies()
-    const role = cookieStore.get('session_role')
-    return role?.value as UserRole | undefined
+    try {
+        const cookieStore = await cookies()
+        const role = cookieStore.get('session_role')
+        return role?.value as UserRole | undefined
+    } catch (error) {
+        // This handles cases where cookies() is called during static generation
+        return undefined;
+    }
 }
 
 export async function getUser() {
