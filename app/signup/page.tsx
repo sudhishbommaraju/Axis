@@ -119,15 +119,16 @@ export default function RoleSelectionPage() {
                     })}
                 </div>
 
-                <div className="flex flex-col items-center gap-6 pt-8">
+                <div className="flex flex-col items-center gap-6 pt-8 pb-24 relative z-20">
                     <Button
                         onClick={handleContinue}
                         disabled={!selectedRole || isNavigating}
+                        type="button"
                         className={cn(
-                            "px-12 py-6 text-lg font-bold rounded-2xl transition-all duration-300",
+                            "px-12 py-6 text-lg font-bold rounded-2xl transition-all duration-300 relative z-30",
                             selectedRole
-                                ? "bg-emerald-500 text-black hover:bg-emerald-400 hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
-                                : "bg-white/5 text-neutral-500 cursor-not-allowed hover:bg-white/5"
+                                ? "bg-emerald-500 text-black hover:bg-emerald-400 hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer"
+                                : "bg-white/5 text-neutral-500 hover:bg-white/5"
                         )}
                     >
                         {isNavigating ? (
