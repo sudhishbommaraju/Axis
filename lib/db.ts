@@ -11,35 +11,50 @@ export type OnboardingStatus = 'incomplete' | 'complete';
 export interface User {
     id: string;
     email: string;
-    passwordHash: string; // In a real app, this would be hashed. Storing cleartext/simulated hash for now.
+    passwordHash: string;
     name: string;
     role: UserRole;
     onboardingStatus: OnboardingStatus;
     createdAt: string;
     emailVerified: boolean;
     verificationCode?: string;
+    visitCount?: number;
+}
+
+export interface Message {
+    id: string;
+    senderId: string;
+    receiverId: string;
+    content: string;
+    timestamp: string;
+    read: boolean;
 }
 
 export interface OnboardingData {
     userId: string;
     role: UserRole;
-    data: any; // Structured data based on role
+    data: any;
     updatedAt: string;
 }
 
 export interface DbSchema {
     users: User[];
     onboarding: OnboardingData[];
+    messages: Message[];
 }
 
 async function readDb(): Promise<DbSchema> {
     try {
         const data = await fs.readFile(DB_PATH, 'utf-8');
-        if (!data.trim()) return { users: [], onboarding: [] };
-        return JSON.parse(data);
+        if (!data.trim()) return { users: [], onboarding: [], messages: [] };
+        const parsed = JSON.parse(data);
+        return {
+            users: parsed.users || [],
+            onboarding: parsed.onboarding || [],
+            messages: parsed.messages || []
+        };
     } catch (error) {
-        // If file doesn't exist, return empty default
-        return { users: [], onboarding: [] };
+        return { users: [], onboarding: [], messages: [] };
     }
 }
 
@@ -49,7 +64,6 @@ async function writeDb(data: DbSchema): Promise<void> {
         await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
     } catch (error: any) {
         console.error("DB Write Error:", error);
-        // Expose system error for debugging (OneDrive lock, permissions, etc.)
         throw new Error(`DB Save Failed: ${error.code || error.message} at ${DB_PATH}`);
     }
 }
@@ -59,6 +73,10 @@ export const db = {
         findByEmail: async (email: string) => {
             const dbData = await readDb();
             return dbData.users.find(u => u.email === email);
+        },
+        findById: async (id: string) => {
+            const dbData = await readDb();
+            return dbData.users.find(u => u.id === id);
         },
         create: async (user: User) => {
             const dbData = await readDb();
@@ -72,6 +90,16 @@ export const db = {
             if (index === -1) return null;
 
             dbData.users[index] = { ...dbData.users[index], ...updates };
+            await writeDb(dbData);
+            return dbData.users[index];
+        },
+        incrementVisits: async (id: string) => {
+            const dbData = await readDb();
+            const index = dbData.users.findIndex(u => u.id === id);
+            if (index === -1) return null;
+
+            const current = dbData.users[index].visitCount || 0;
+            dbData.users[index].visitCount = current + 1;
             await writeDb(dbData);
             return dbData.users[index];
         }
@@ -93,6 +121,31 @@ export const db = {
         getByUserId: async (userId: string) => {
             const dbData = await readDb();
             return dbData.onboarding.find(o => o.userId === userId);
+        }
+    },
+    messages: {
+        create: async (msg: Message) => {
+            const dbData = await readDb();
+            dbData.messages.push(msg);
+            await writeDb(dbData);
+            return msg;
+        },
+        getConversation: async (user1: string, user2: string) => {
+            const dbData = await readDb();
+            return dbData.messages.filter(m =>
+                (m.senderId === user1 && m.receiverId === user2) ||
+                (m.senderId === user2 && m.receiverId === user1)
+            ).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+        },
+        getRecentContacts: async (userId: string) => {
+            // Basic implementation: find all unique userIds communicated with
+            const dbData = await readDb();
+            const contacts = new Set<string>();
+            dbData.messages.forEach(m => {
+                if (m.senderId === userId) contacts.add(m.receiverId);
+                if (m.receiverId === userId) contacts.add(m.senderId);
+            });
+            return Array.from(contacts);
         }
     }
 };
