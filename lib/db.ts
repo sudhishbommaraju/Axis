@@ -14,6 +14,8 @@ export interface User {
     role: UserRole;
     onboardingStatus: OnboardingStatus;
     createdAt: string;
+    emailVerified: boolean;
+    verificationCode?: string;
 }
 
 export interface OnboardingData {

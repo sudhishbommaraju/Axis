@@ -22,6 +22,11 @@ export async function signup(formData: FormData) {
     }
 
     // Create User
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // MOCK EMAIL SENDING
+    console.log(`\n\n[EMAIL MOCK] Verification code for ${email}: ${verificationCode}\n\n`);
+
     const newUser = await db.users.create({
         id: generateId(),
         email,
@@ -29,14 +34,40 @@ export async function signup(formData: FormData) {
         name,
         role,
         onboardingStatus: 'incomplete',
+        emailVerified: false,
+        verificationCode,
         createdAt: new Date().toISOString()
     });
 
-    // Create Session
+    // Create Session (but don't rely on it fully until verified)
     const cookieStore = await cookies();
+    // We set role so they can verify, but onboarding check should block them if not verified
     cookieStore.set('session_role', role, { httpOnly: true, path: '/' });
-    cookieStore.set('session_user_id', newUser.id, { httpOnly: true, path: '/' });
+
+    // Redirect to verification
+    redirect(`/verify-email?email=${encodeURIComponent(email)}`);
+}
+
+export async function verifyEmail(email: string, code: string) {
+    const user = await db.users.findByEmail(email);
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    if (user.verificationCode !== code) {
+        throw new Error("Invalid verification code");
+    }
+
+    await db.users.update(user.id, {
+        emailVerified: true,
+        verificationCode: undefined
+    });
+
+    // Set full session
+    const cookieStore = await cookies();
+    cookieStore.set('session_user_id', user.id, { httpOnly: true, path: '/' });
     cookieStore.set('onboarding_status', 'incomplete', { httpOnly: true, path: '/' });
+    cookieStore.set('session_role', user.role, { httpOnly: true, path: '/' });
 
     redirect('/onboarding');
 }
