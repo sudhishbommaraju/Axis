@@ -57,7 +57,7 @@ function SignupFormContent() {
                     </Link>
                 </div>
                 <CardTitle className="text-2xl font-bold text-white">Create {displayRole} Account</CardTitle>
-                <CardDescription>
+                <CardDescription className="text-neutral-200">
                     Enter your details to start your {role} journey on Axis.
                 </CardDescription>
             </CardHeader>
@@ -69,16 +69,35 @@ function SignupFormContent() {
                         </div>
                     )}
                     <div className="space-y-2">
-                        <Label htmlFor="name">Full Name</Label>
-                        <Input id="name" name="name" placeholder="John Doe" required className="bg-white/5 border-white/10 text-white" />
+                        <Label htmlFor="name" className="text-white">Full Name</Label>
+                        <Input
+                            id="name"
+                            name="name"
+                            placeholder="John Doe"
+                            required
+                            className="bg-white/5 border-white/10 text-white placeholder:text-neutral-400 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                        />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" name="email" type="email" placeholder="name@example.com" required className="bg-white/5 border-white/10 text-white" />
+                        <Label htmlFor="email" className="text-white">Email</Label>
+                        <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="name@example.com"
+                            required
+                            className="bg-white/5 border-white/10 text-white placeholder:text-neutral-400 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                        />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input id="password" name="password" type="password" required className="bg-white/5 border-white/10 text-white" />
+                        <Label htmlFor="password" className="text-white">Password</Label>
+                        <Input
+                            id="password"
+                            name="password"
+                            type="password"
+                            required
+                            className="bg-white/5 border-white/10 text-white focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                        />
                     </div>
                 </CardContent>
                 <CardFooter>
