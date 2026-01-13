@@ -28,7 +28,15 @@ function SignupFormContent() {
         }
 
         try {
-            await signup(formData);
+            const result = await signup(formData);
+
+            if (result && result.error) {
+                setError(result.error);
+                setIsLoading(false);
+            } else if (result && result.success) {
+                // Success - redirect to verification
+                window.location.href = `/verify-email?email=${encodeURIComponent(result.email as string)}`;
+            }
         } catch (e) {
             setError((e as Error).message || "An error occurred during signup");
             setIsLoading(false);
