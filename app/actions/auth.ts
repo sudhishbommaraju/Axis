@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { db, UserRole } from '@/lib/db'
+import { sendVerificationEmail } from '@/lib/email'
 
 // Simple ID generator without crypto dependency to prevent runtime issues
 const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -29,8 +30,11 @@ export async function signup(formData: FormData) {
         // Create User
         const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-        // MOCK EMAIL SENDING
-        console.log(`\n\n[EMAIL MOCK] Verification code for ${email}: ${verificationCode}\n\n`);
+        // Send Email (Async, don't block too long but wait to ensure it works)
+        await sendVerificationEmail(email, verificationCode);
+
+        // Keep log as backup for dev/if API key missing
+        console.log(`[EMAIL BACKUP] Code for ${email}: ${verificationCode}`);
 
         const newUser = await db.users.create({
             id: generateId(),
