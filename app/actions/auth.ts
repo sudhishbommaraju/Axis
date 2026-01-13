@@ -152,10 +152,14 @@ export async function getRole(): Promise<UserRole | undefined> {
 }
 
 export async function getUser() {
-    const cookieStore = await cookies();
-    const userId = cookieStore.get('session_user_id')?.value;
-    if (!userId) return null;
-    // In efficient app, might use a cached session, but reading DB is fine for this scale
-    // Implementation of readDb is lightweight json
-    return null; // Todo: implement getUserById if needed
+    try {
+        const cookieStore = await cookies();
+        const userId = cookieStore.get('session_user_id')?.value;
+        if (!userId) return null;
+        // In efficient app, might use a cached session, but reading DB is fine for this scale
+        // Implementation of readDb is lightweight json
+        return null; // Todo: implement getUserById if needed
+    } catch (error) {
+        return null;
+    }
 }
