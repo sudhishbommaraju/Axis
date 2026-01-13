@@ -34,8 +34,8 @@ function SignupFormContent() {
                 setError(result.error);
                 setIsLoading(false);
             } else if (result && result.success) {
-                // Success - redirect to verification
-                window.location.href = `/verify-email?email=${encodeURIComponent(result.email as string)}`;
+                // Success - redirect directly to onboarding (bypass verification)
+                window.location.href = '/onboarding';
             }
         } catch (e) {
             setError((e as Error).message || "An error occurred during signup");

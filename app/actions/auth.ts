@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { db, UserRole } from '@/lib/db'
-import { sendVerificationEmail } from '@/lib/email'
+// import { sendVerificationEmail } from '@/lib/email'
 
 // Simple ID generator without crypto dependency to prevent runtime issues
 const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -28,13 +28,8 @@ export async function signup(formData: FormData) {
         }
 
         // Create User
-        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-        // Send Email (Async, don't block too long but wait to ensure it works)
-        await sendVerificationEmail(email, verificationCode);
-
-        // Keep log as backup for dev/if API key missing
-        console.log(`[EMAIL BACKUP] Code for ${email}: ${verificationCode}`);
+        // SKIPPED: Verification Code Generation
+        // SKIPPED: Email Sending
 
         const newUser = await db.users.create({
             id: generateId(),
@@ -43,16 +38,18 @@ export async function signup(formData: FormData) {
             name,
             role,
             onboardingStatus: 'incomplete', // Ensure this matches DB schema
-            emailVerified: false,
-            verificationCode,
+            emailVerified: true, // Auto-verify
+            // verificationCode, // Removed
             createdAt: new Date().toISOString()
         });
 
         console.log(`[SIGNUP] User created successfully: ${newUser.id}`);
 
-        // Create Session
+        // Create Full Session Immediately
         const cookieStore = await cookies();
         cookieStore.set('session_role', role, { httpOnly: true, path: '/' });
+        cookieStore.set('session_user_id', newUser.id, { httpOnly: true, path: '/' });
+        cookieStore.set('onboarding_status', 'incomplete', { httpOnly: true, path: '/' });
 
         // Return success check instead of throwing
         return { success: true, email };
