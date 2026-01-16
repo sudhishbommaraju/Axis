@@ -14,12 +14,17 @@ export interface ConversationContact {
     lastMessageTime?: string;
 }
 
-export async function sendMessage(receiverId: string, content: string) {
-    const cookieStore = await cookies();
-    const senderId = cookieStore.get('session_user_id')?.value;
+import { messageSchema } from '@/lib/validations';
+import { requireAuth } from '@/lib/auth-guard';
 
-    if (!senderId) return { error: "Not authenticated" };
-    if (!content.trim()) return { error: "Empty message" };
+// ... imports
+
+export async function sendMessage(receiverId: string, content: string) {
+    const session = await requireAuth();
+    const senderId = session.id;
+
+    const validated = messageSchema.safeParse({ content });
+    if (!validated.success) return { error: "Message content invalid (max 1000 chars)" };
 
     const newMessage: Message = {
         id: generateId(),
@@ -38,34 +43,41 @@ export async function sendMessage(receiverId: string, content: string) {
 }
 
 export async function getMessages(otherUserId: string) {
-    const cookieStore = await cookies();
-    const currentUserId = cookieStore.get('session_user_id')?.value;
-    if (!currentUserId) return [];
+    const session = await requireAuth();
+    const currentUserId = session.id;
 
     return await db.messages.getConversation(currentUserId, otherUserId);
 }
 
 export async function getConversations(): Promise<ConversationContact[]> {
-    const cookieStore = await cookies();
-    const currentUserId = cookieStore.get('session_user_id')?.value;
-    if (!currentUserId) return [];
+    const session = await requireAuth();
+    const currentUserId = session.id;
 
     const contactIds = await db.messages.getRecentContacts(currentUserId);
 
     // Enrich with user details and last message
+    // Optimized: Fetch all users in one go
+    const users = await db.users.getMany(contactIds);
+    const userMap = new Map(users.map(u => [u.id, u]));
+
     const conversations: ConversationContact[] = [];
 
     for (const contactId of contactIds) {
-        const user = await db.users.findById(contactId);
+        const user = userMap.get(contactId);
         if (!user) continue;
 
-        // Get last message for context
+        // Get last message for context (Still N+1 for messages, but this is harder to optimize without a real Join)
+        // Optimization: We could fetch ALL messages for current user once and filter in memory, 
+        // but let's stick to this as messages might be large.
+        // Actually, `getRecentContacts` iterates all messages already.
+        // Ideally we refactor `getRecentContacts` to return the last message too.
+        // But for now, fixing the User Lookup N+1 is a big win.
         const msgs = await db.messages.getConversation(currentUserId, contactId);
         const lastMsg = msgs[msgs.length - 1];
 
         conversations.push({
             userId: user.id,
-            name: user.name, // In real app, might want business name too
+            name: user.name,
             lastMessage: lastMsg?.content || '',
             lastMessageTime: lastMsg?.timestamp || ''
         });

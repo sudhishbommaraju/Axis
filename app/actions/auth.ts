@@ -8,22 +8,38 @@ import { db, UserRole } from '@/lib/db'
 // Simple ID generator without crypto dependency to prevent runtime issues
 const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
+import { signupSchema, loginSchema } from '@/lib/validations';
+import { checkRateLimit, AUTH_LIMIT } from '@/lib/rate-limit';
+
 export async function signup(formData: FormData) {
     try {
-        const name = formData.get('name') as string;
         const email = formData.get('email') as string;
-        const password = formData.get('password') as string;
-        const role = formData.get('role') as UserRole;
 
-        console.log(`[SIGNUP] Attempting signup for ${email} as ${role}`);
-
-        if (!email || !password || !role) {
-            return { error: "Missing required fields" };
+        // Rate limit by email to prevent spam for specific target
+        if (email && !checkRateLimit(`signup:${email}`, AUTH_LIMIT)) {
+            return { error: "Too many attempts. Please try again later." };
         }
 
-        const existingUser = await db.users.findByEmail(email);
+        const rawData = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            password: formData.get('password'),
+            role: formData.get('role')
+        };
+
+        const validatedFields = signupSchema.safeParse(rawData);
+
+        if (!validatedFields.success) {
+            return { error: "Validation failed", details: validatedFields.error.flatten().fieldErrors };
+        }
+
+        const { name, email: validatedEmail, password, role } = validatedFields.data;
+
+        console.log(`[SIGNUP] Attempting signup for ${validatedEmail} as ${role}`);
+
+        const existingUser = await db.users.findByEmail(validatedEmail);
         if (existingUser) {
-            console.log(`[SIGNUP] User already exists: ${email}`);
+            console.log(`[SIGNUP] User already exists: ${validatedEmail}`);
             return { error: "User already exists" };
         }
 
@@ -33,10 +49,10 @@ export async function signup(formData: FormData) {
 
         const newUser = await db.users.create({
             id: generateId(),
-            email,
+            email: validatedEmail,
             passwordHash: password, // In real app, hash this
             name,
-            role,
+            role: role as UserRole,
             onboardingStatus: 'incomplete', // Ensure this matches DB schema
             emailVerified: true, // Auto-verify
             // verificationCode, // Removed
@@ -47,17 +63,24 @@ export async function signup(formData: FormData) {
 
         // Create Full Session Immediately
         const cookieStore = await cookies();
-        cookieStore.set('session_role', role, { httpOnly: true, path: '/' });
-        cookieStore.set('session_user_id', newUser.id, { httpOnly: true, path: '/' });
-        cookieStore.set('onboarding_status', 'incomplete', { httpOnly: true, path: '/' });
+        const cookieOptions = {
+            httpOnly: true,
+            path: '/',
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax' as const
+        };
+
+        cookieStore.set('session_role', role, cookieOptions);
+        cookieStore.set('session_user_id', newUser.id, cookieOptions);
+        cookieStore.set('onboarding_status', 'incomplete', cookieOptions);
 
         // Return success check instead of throwing
         return { success: true, email };
 
     } catch (error: any) {
-        console.error("SIGNUP ERROR:", error);
-        // Return the actual error message or a fallback
-        return { error: error.message || "An unexpected error occurred" };
+        console.error("SIGNUP ERROR: [Redacted for security]");
+        // Return a generic error to the client
+        return { error: "An unexpected error occurred during signup." };
     }
 }
 
@@ -85,38 +108,79 @@ export async function verifyEmail(email: string, code: string) {
     redirect('/onboarding');
 }
 
-export async function login(role: UserRole) {
-    // Legacy support or dev login
-    // converting to new storage if needed or just simple session
-    const cookieStore = await cookies()
-    cookieStore.set('session_role', role, { httpOnly: true, path: '/' })
-    redirect('/onboarding')
-}
 
-export async function completeOnboarding(role: UserRole, data?: unknown) {
-    const cookieStore = await cookies();
-    const userId = cookieStore.get('session_user_id')?.value;
 
-    if (!userId) {
-        // Fallback for dev/existing flows without user ID
-        // Just redirect if no user session
-        console.warn("No user ID found during onboarding completion");
-    } else {
-        // Save structured data if provided
-        if (data) {
-            await db.onboarding.save({
-                userId,
-                role,
-                data,
-                updatedAt: new Date().toISOString()
-            });
-        }
+export async function login(formData: FormData) {
+    const rawData = {
+        email: formData.get('email'),
+        password: formData.get('password')
+    };
 
-        // Update User Status
-        await db.users.update(userId, { onboardingStatus: 'complete' });
+    // 1. Rate Limit
+    const email = rawData.email as string; // Check limits before validation parsing
+    if (email && !checkRateLimit(`login:${email}`, AUTH_LIMIT)) {
+        return { error: "Too many login attempts. Please try again later." };
     }
 
+    const validatedFields = loginSchema.safeParse(rawData);
+
+    if (!validatedFields.success) {
+        return { error: "Invalid input" };
+    }
+
+    const { email: validatedEmail, password } = validatedFields.data;
+
+    const user = await db.users.findByEmail(validatedEmail);
+
+    // Simple password check (in real app, use bcrypt.compare)
+    if (!user || user.passwordHash !== password) {
+        return { error: "Invalid email or password" };
+    }
+
+    // Set Session
+    const cookieStore = await cookies();
+    const cookieOptions = {
+        httpOnly: true,
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax' as const
+    };
+
+    cookieStore.set('session_role', user.role, cookieOptions);
+    cookieStore.set('session_user_id', user.id, cookieOptions);
+    cookieStore.set('onboarding_status', user.onboardingStatus, cookieOptions);
+
+    // Redirect based on role
+    if (user.role === 'owner') {
+        redirect('/platform/owner');
+    } else if (user.role === 'customer') {
+        redirect('/platform/decisions');
+    } else {
+        redirect('/applicant'); // Applicant/Default
+    }
+}
+
+import { requireAuth } from '@/lib/auth-guard';
+
+export async function completeOnboarding(role: UserRole, data?: unknown) {
+    const session = await requireAuth();
+    const userId = session.id;
+
+    // Save structured data if provided
+    if (data) {
+        await db.onboarding.save({
+            userId,
+            role,
+            data,
+            updatedAt: new Date().toISOString()
+        });
+    }
+
+    // Update User Status
+    await db.users.update(userId, { onboardingStatus: 'complete' });
+
     // Update Cookie
+    const cookieStore = await cookies(); // Still need to update cookie
     cookieStore.set('onboarding_status', 'complete', { httpOnly: true, path: '/' });
 
     // Redirect
@@ -125,7 +189,7 @@ export async function completeOnboarding(role: UserRole, data?: unknown) {
     } else if (role === 'customer') {
         redirect('/platform/decisions');
     } else {
-        redirect('/'); // Applicant
+        redirect('/applicant'); // Applicant
     }
 }
 

@@ -15,16 +15,18 @@ export interface PublicProfile {
     visitCount?: number;  // Only visible if isOwnProfile
 }
 
+import { getSession } from '@/lib/auth-guard';
+
 export async function getPublicProfile(targetUserId: string): Promise<PublicProfile | null> {
     const targetUser = await db.users.findById(targetUserId);
     if (!targetUser) return null;
 
     // Get current session to check identity
-    const cookieStore = await cookies();
-    const currentUserId = cookieStore.get('session_user_id')?.value;
+    const session = await getSession();
+    const currentUserId = session?.id;
     const isOwnProfile = currentUserId === targetUserId;
 
-    // Increment visit count if viewed by someone else
+    // Increment visit count if viewed by someone else AND authenticated
     if (currentUserId && !isOwnProfile) {
         // optimistically increment (fire and forget to not slow down response too much)
         await db.users.incrementVisits(targetUserId);

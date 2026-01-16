@@ -58,6 +58,26 @@ async function readDb(): Promise<DbSchema> {
     }
 }
 
+// Simple Mutex for single-process concurrency safety
+class Mutex {
+    private mutex = Promise.resolve();
+
+    lock(): Promise<() => void> {
+        let begin: (unlock: () => void) => void = unlock => { };
+
+        this.mutex = this.mutex.then(() => {
+            return new Promise<void>(resolve => {
+                begin = resolve;
+            });
+        });
+
+        return new Promise(resolve => {
+            resolve(begin as any);
+        });
+    }
+}
+const dbMutex = new Mutex();
+
 async function writeDb(data: DbSchema): Promise<void> {
     try {
         await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
@@ -79,44 +99,68 @@ export const db = {
             return dbData.users.find(u => u.id === id);
         },
         create: async (user: User) => {
-            const dbData = await readDb();
-            dbData.users.push(user);
-            await writeDb(dbData);
-            return user;
+            const unlock = await dbMutex.lock();
+            try {
+                const dbData = await readDb();
+                dbData.users.push(user);
+                await writeDb(dbData);
+                return user;
+            } finally {
+                unlock();
+            }
         },
         update: async (id: string, updates: Partial<User>) => {
-            const dbData = await readDb();
-            const index = dbData.users.findIndex(u => u.id === id);
-            if (index === -1) return null;
+            const unlock = await dbMutex.lock();
+            try {
+                const dbData = await readDb();
+                const index = dbData.users.findIndex(u => u.id === id);
+                if (index === -1) return null;
 
-            dbData.users[index] = { ...dbData.users[index], ...updates };
-            await writeDb(dbData);
-            return dbData.users[index];
+                dbData.users[index] = { ...dbData.users[index], ...updates };
+                await writeDb(dbData);
+                return dbData.users[index];
+            } finally {
+                unlock();
+            }
         },
         incrementVisits: async (id: string) => {
-            const dbData = await readDb();
-            const index = dbData.users.findIndex(u => u.id === id);
-            if (index === -1) return null;
+            const unlock = await dbMutex.lock();
+            try {
+                const dbData = await readDb();
+                const index = dbData.users.findIndex(u => u.id === id);
+                if (index === -1) return null;
 
-            const current = dbData.users[index].visitCount || 0;
-            dbData.users[index].visitCount = current + 1;
-            await writeDb(dbData);
-            return dbData.users[index];
+                const current = dbData.users[index].visitCount || 0;
+                dbData.users[index].visitCount = current + 1;
+                await writeDb(dbData);
+                return dbData.users[index];
+            } finally {
+                unlock();
+            }
+        },
+        getMany: async (ids: string[]) => {
+            const dbData = await readDb();
+            return dbData.users.filter(u => ids.includes(u.id));
         }
     },
     onboarding: {
         save: async (data: OnboardingData) => {
-            const dbData = await readDb();
-            const index = dbData.onboarding.findIndex(o => o.userId === data.userId);
+            const unlock = await dbMutex.lock();
+            try {
+                const dbData = await readDb();
+                const index = dbData.onboarding.findIndex(o => o.userId === data.userId);
 
-            if (index >= 0) {
-                dbData.onboarding[index] = data;
-            } else {
-                dbData.onboarding.push(data);
+                if (index >= 0) {
+                    dbData.onboarding[index] = data;
+                } else {
+                    dbData.onboarding.push(data);
+                }
+
+                await writeDb(dbData);
+                return data;
+            } finally {
+                unlock();
             }
-
-            await writeDb(dbData);
-            return data;
         },
         getByUserId: async (userId: string) => {
             const dbData = await readDb();
@@ -125,10 +169,15 @@ export const db = {
     },
     messages: {
         create: async (msg: Message) => {
-            const dbData = await readDb();
-            dbData.messages.push(msg);
-            await writeDb(dbData);
-            return msg;
+            const unlock = await dbMutex.lock();
+            try {
+                const dbData = await readDb();
+                dbData.messages.push(msg);
+                await writeDb(dbData);
+                return msg;
+            } finally {
+                unlock();
+            }
         },
         getConversation: async (user1: string, user2: string) => {
             const dbData = await readDb();

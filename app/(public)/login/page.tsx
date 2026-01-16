@@ -1,6 +1,7 @@
 "use client"
 import { SignInPage, Testimonial } from "@/components/ui/sign-in";
 import { useRouter } from "next/navigation";
+import { login } from "@/app/actions/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -29,10 +30,18 @@ export default function LoginPage() {
     console.log("LoginPage Mounting...");
     const router = useRouter();
 
-    const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {
+
+    // ...
+
+    const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // In a real app, you would handle authentication here
-        router.push('/');
+        const formData = new FormData(event.currentTarget);
+        const result = await login(formData);
+
+        if (result?.error) {
+            alert(result.error);
+        }
+        // Success redirect is handled by server action
     };
 
     const handleGoogleSignIn = () => {

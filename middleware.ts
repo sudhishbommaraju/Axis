@@ -31,11 +31,20 @@ export function middleware(request: NextRequest) {
         // Redirect to appropriate dashboard
         if (role === 'owner') return NextResponse.redirect(new URL('/platform/owner', request.url));
         if (role === 'customer') return NextResponse.redirect(new URL('/platform/decisions', request.url));
+        if (role === 'applicant') return NextResponse.redirect(new URL('/applicant', request.url));
+    }
+
+    // 3. Public Auth Route Check (Smart Redirect)
+    // If user is already logged in (has role) and tries to visit login or landing, send them to dashboard
+    if (role && (path === '/login' || path === '/')) {
+        if (role === 'owner') return NextResponse.redirect(new URL('/platform/owner', request.url));
+        if (role === 'customer') return NextResponse.redirect(new URL('/platform/decisions', request.url));
+        if (role === 'applicant') return NextResponse.redirect(new URL('/applicant', request.url));
     }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/platform/:path*', '/onboarding/:path*'],
+    matcher: ['/', '/login', '/platform/:path*', '/onboarding/:path*'],
 }
