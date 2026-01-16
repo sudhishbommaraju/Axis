@@ -8,7 +8,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { ArrowRight, Mail, Gem, Lock, Eye, EyeOff, ArrowLeft, X, AlertCircle, PartyPopper, Loader, Diamond, User, ShieldCheck, FilePlus } from "lucide-react";
 // Importing animation components from framer-motion
 import { AnimatePresence, motion, useInView, Variants, Transition } from "framer-motion";
-import { login } from "@/app/actions/auth";
+import { login, signup } from "@/app/actions/auth";
+import { useRouter } from "next/navigation";
 
 // --- CONFETTI LOGIC ---
 import type { GlobalOptions as ConfettiGlobalOptions, CreateTypes as ConfettiInstance, Options as ConfettiOptions } from "canvas-confetti"
@@ -195,29 +196,53 @@ export const AuthComponent = ({ logo = <DefaultLogo />, brandName = "Axis" }: Au
         }
     };
 
+    const router = useRouter();
+
     const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Here we trigger the server action to set the session cookie
-        // In a real app, we would validate email/password/entropy first.
-        // For this demo, we trust the flow and simply set the role.
-
-        // Ensure accountType is valid
-        if (accountType) {
-            await login(accountType);
-        }
-        return;
 
         if (password !== confirmPassword) {
             setModalErrorMessage("Passwords do not match!");
             setModalStatus('error');
-        } else {
-            setModalStatus('loading');
-            const loadingStepsCount = modalSteps.length - 1;
-            const totalDuration = loadingStepsCount * TEXT_LOOP_INTERVAL * 1000;
-            setTimeout(() => {
+            return;
+        }
+
+        if (!accountType) return;
+
+        setModalStatus('loading');
+
+        try {
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('role', accountType);
+            formData.append('name', email.split('@')[0] || 'User');
+
+            const res = await signup(formData);
+
+            if (res?.error) {
+                // Handle Validation Errors Object
+                const msg = typeof res.error === 'string'
+                    ? res.error
+                    : (res.details ? Object.values(res.details).flat().join(', ') : "Signup failed");
+
+                setModalErrorMessage(msg);
+                setModalStatus('error');
+            } else {
                 fireSideCanons();
                 setModalStatus('success');
-            }, totalDuration);
+
+                // Redirect after success animation
+                setTimeout(() => {
+                    if (accountType === 'owner') router.push('/platform/owner');
+                    else if (accountType === 'customer') router.push('/platform/decisions');
+                    else router.push('/applicant');
+                }, 2000);
+            }
+        } catch (err) {
+            console.error(err);
+            setModalErrorMessage("An unexpected error occurred.");
+            setModalStatus('error');
         }
     };
 
