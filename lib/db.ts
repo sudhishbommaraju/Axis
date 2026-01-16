@@ -64,24 +64,16 @@ class Mutex {
     private mutex = Promise.resolve();
 
     lock(): Promise<() => void> {
-        // The implementation:
-        // We append a new promise to the chain.
-        // This new promise will resolve when the caller calls 'unlock'.
-        // The caller waits for the *previous* promise in the chain to resolve before proceeding.
+        let unlockNext: () => void = () => { };
 
-        let begin: (unlock: () => void) => void = () => { };
-
-        // Create the promise that will block the *next* operation
         const willUnlock = new Promise<void>(resolve => {
-            begin = resolve;
+            unlockNext = () => resolve();
         });
 
-        // Current operation waits for the *previous* operation to complete
         const effectiveLock = this.mutex.then(() => {
-            return begin;
+            return unlockNext;
         });
 
-        // Update the mutex to wait for *this* operation to complete
         this.mutex = willUnlock;
 
         return effectiveLock;
