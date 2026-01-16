@@ -222,9 +222,11 @@ export const AuthComponent = ({ logo = <DefaultLogo />, brandName = "Axis" }: Au
 
             if (res?.error) {
                 // Handle Validation Errors Object
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const details = (res as any).details;
                 const msg = typeof res.error === 'string'
                     ? res.error
-                    : (res.details ? Object.values(res.details).flat().join(', ') : "Signup failed");
+                    : (details ? Object.values(details).flat().join(', ') : "Signup failed");
 
                 setModalErrorMessage(msg);
                 setModalStatus('error');
