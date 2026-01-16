@@ -59,21 +59,32 @@ async function readDb(): Promise<DbSchema> {
 }
 
 // Simple Mutex for single-process concurrency safety
+// Simple Mutex for single-process concurrency safety
 class Mutex {
     private mutex = Promise.resolve();
 
     lock(): Promise<() => void> {
-        let begin: (unlock: () => void) => void = unlock => { };
+        // The implementation:
+        // We append a new promise to the chain.
+        // This new promise will resolve when the caller calls 'unlock'.
+        // The caller waits for the *previous* promise in the chain to resolve before proceeding.
 
-        this.mutex = this.mutex.then(() => {
-            return new Promise<void>(resolve => {
-                begin = resolve;
-            });
+        let begin: (unlock: () => void) => void = () => { };
+
+        // Create the promise that will block the *next* operation
+        const willUnlock = new Promise<void>(resolve => {
+            begin = resolve;
         });
 
-        return new Promise(resolve => {
-            resolve(begin as any);
+        // Current operation waits for the *previous* operation to complete
+        const effectiveLock = this.mutex.then(() => {
+            return begin;
         });
+
+        // Update the mutex to wait for *this* operation to complete
+        this.mutex = willUnlock;
+
+        return effectiveLock;
     }
 }
 const dbMutex = new Mutex();
